@@ -1,35 +1,42 @@
 import React from 'react';
-import logo from '../assets/logo.png'; // replace with your logo path
+import logo from '../assets/logo.png';
 
 const Header = () => {
   const headerStyle = {
-    backgroundColor: '#1a1f29', // lighter than pure dark
+    backgroundColor: '#1a1f29',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '15px 30px',
-    position: 'sticky',
+    padding: '15px 40px',
+    position: 'fixed',
     top: 0,
+    left: 0,
+    right: 0,
     zIndex: 100,
     boxShadow: '0 3px 15px rgba(0,0,0,0.4)',
-    backdropFilter: 'blur(5px)' // subtle blur for elegance
+    backdropFilter: 'blur(5px)'
   };
 
   const logoStyle = {
-    width: '100px', // slightly smaller
+    width: '100px',
     height: 'auto'
   };
 
   const navStyle = {
     display: 'flex',
-    gap: '25px',
+    gap: '30px',
     fontWeight: 'bold'
   };
 
   const linkStyle = {
-    color: '#f0d36f', // a lighter gold
+    color: '#f0d36f',
     textDecoration: 'none',
-    transition: 'color 0.3s ease, transform 0.2s ease'
+    transition: 'color 0.3s ease, transform 0.2s ease',
+    cursor: 'pointer'
+  };
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const hoverLink = (e) => {
@@ -46,10 +53,41 @@ const Header = () => {
     <header style={headerStyle}>
       <img src={logo} alt="EOS Limitless Pictures Logo" style={logoStyle} />
       <nav style={navStyle}>
-        <a href="/" style={linkStyle} onMouseEnter={hoverLink} onMouseLeave={unhoverLink}>Home</a>
-        <a href="/services" style={linkStyle} onMouseEnter={hoverLink} onMouseLeave={unhoverLink}>Services</a>
-        <a href="/about" style={linkStyle} onMouseEnter={hoverLink} onMouseLeave={unhoverLink}>About</a>
-        <a href="/contact" style={linkStyle} onMouseEnter={hoverLink} onMouseLeave={unhoverLink}>Contact</a>
+        <a 
+          href="#home" 
+          style={linkStyle} 
+          onClick={(e) => { e.preventDefault(); scrollTo('home'); }} 
+          onMouseEnter={hoverLink} 
+          onMouseLeave={unhoverLink}
+        >Home</a>
+        <a 
+          href="#services" 
+          style={linkStyle} 
+          onClick={(e) => { e.preventDefault(); scrollTo('services'); }} 
+          onMouseEnter={hoverLink} 
+          onMouseLeave={unhoverLink}
+        >Services</a>
+        <a 
+          href="#photography" 
+          style={linkStyle} 
+          onClick={(e) => { e.preventDefault(); scrollTo('photography'); }} 
+          onMouseEnter={hoverLink} 
+          onMouseLeave={unhoverLink}
+        >Photography</a>
+        <a 
+          href="#about" 
+          style={linkStyle} 
+          onClick={(e) => { e.preventDefault(); scrollTo('about'); }} 
+          onMouseEnter={hoverLink} 
+          onMouseLeave={unhoverLink}
+        >About</a>
+        <a 
+          href="#contact" 
+          style={linkStyle} 
+          onClick={(e) => { e.preventDefault(); scrollTo('contact'); }} 
+          onMouseEnter={hoverLink} 
+          onMouseLeave={unhoverLink}
+        >Contact</a>
       </nav>
     </header>
   );
