@@ -1,109 +1,159 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import founderImg from '../assets/founder.avif';
 
 const AboutPage = () => {
-  const sectionStyle = {
-    backgroundColor: '#0b0f14',
-    color: 'white',
-    padding: '80px 20px',
-    fontFamily: 'Arial, sans-serif',
-    lineHeight: '1.8',
-    minHeight: '100vh',
-    textAlign: 'center'
-  };
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [btnHovered, setBtnHovered] = useState(false);
 
-  const headingStyle = {
-    fontSize: '40px',
-    color: '#d4af37',
-    marginBottom: '40px'
-  };
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const textStyle = {
-    fontSize: '16px',
-    maxWidth: '800px',
-    margin: '20px auto',
-    textAlign: 'justify',      // changed to justify
-    textJustify: 'inter-word', // smooth justification
-    gap: '20px'
-  };
+  const isMobile = screenWidth <= 992;
 
-  const paragraphStyle = {
-    marginBottom: '20px'       // spacing between paragraphs
-  };
-
-  const imgContainerStyle = {
-    width: '250px',
-    height: '250px',
-    margin: '40px auto',
-    borderRadius: '50%',
-    overflow: 'hidden',
-    boxShadow: '0 5px 20px rgba(0,0,0,0.5)'
-  };
-
-  const imgStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover'
-  };
-
-  const btnStyle = {
-    display: 'inline-block',
-    marginTop: '30px',
-    padding: '14px 30px',
-    backgroundColor: '#9a9a10',
-    color: 'white',
-    borderRadius: '6px',
-    textDecoration: 'none',
-    fontWeight: 'bold',
-    transition: 'transform 0.2s ease, background 0.2s ease'
-  };
-
-  const btnHover = (e) => {
-    e.target.style.transform = 'scale(1.05)';
-    e.target.style.backgroundColor = '#d4af37';
-  };
-
-  const btnUnhover = (e) => {
-    e.target.style.transform = 'scale(1)';
-    e.target.style.backgroundColor = '#9a9a10';
+  const styles = {
+    section: {
+      backgroundColor: '#0a0e12',
+      color: 'white',
+      padding: isMobile ? '60px 20px' : '100px 5vw',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden'
+    },
+    // The main content box that frames everything
+    contentWrapper: {
+      width: '90%',
+      maxWidth: '1200px',
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: 'center',
+      gap: isMobile ? '40px' : '80px',
+      backgroundColor: '#0d1218',
+      padding: isMobile ? '30px' : '60px',
+      borderRadius: '20px',
+      border: '1px solid rgba(212, 175, 55, 0.15)',
+      boxShadow: '0 40px 100px rgba(0,0,0,0.6)',
+      // Subtle textured background matching the service section
+      backgroundImage: `radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 0)`,
+      backgroundSize: '40px 40px',
+    },
+    imageSide: {
+      flex: '1',
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    imgFrame: {
+      width: isMobile ? '220px' : '350px',
+      height: isMobile ? '220px' : '350px',
+      borderRadius: '50%',
+      padding: '8px',
+      border: '4px solid #e6e2d8',
+      boxShadow: '0 10px 40px rgba(212, 175, 55, 0.2)',
+    },
+    img: {
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      filter: 'grayscale(20%)',
+    },
+    textSide: {
+      flex: '1.5',
+      textAlign: isMobile ? 'center' : 'left',
+    },
+    label: {
+      color: '#d4af37',
+      textTransform: 'uppercase',
+      letterSpacing: '5px',
+      fontSize: '12px',
+      fontWeight: 'bold',
+      marginBottom: '15px',
+      display: 'block'
+    },
+    heading: {
+      fontSize: isMobile ? '36px' : '52px',
+      fontWeight: '900',
+      lineHeight: '1.1',
+      marginBottom: '30px',
+      textTransform: 'uppercase',
+    },
+    textBody: {
+      fontSize: '18px',
+      lineHeight: '1.8',
+      color: '#b0b0b0',
+      textAlign: isMobile ? 'center' : 'justify',
+    },
+    btn: {
+      display: 'inline-block',
+      marginTop: '40px',
+      padding: '16px 40px',
+      backgroundColor: btnHovered ? '#fff' : '#d4af37',
+      color: '#000',
+      borderRadius: '4px',
+      textDecoration: 'none',
+      fontWeight: '900',
+      letterSpacing: '2px',
+      textTransform: 'uppercase',
+      transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+      boxShadow: btnHovered ? '0 0 30px rgba(212, 175, 55, 0.5)' : 'none',
+      transform: btnHovered ? 'translateY(-5px)' : 'translateY(0)',
+    }
   };
 
   return (
-    <section style={sectionStyle}>
-      <h1 style={headingStyle}>About EOS Limitless Pictures</h1>
+    <section style={styles.section}>
+      <div style={styles.contentWrapper}>
+        
+        {/* IMAGE SIDE */}
+        <div style={styles.imageSide}>
+          <div style={styles.imgFrame}>
+            <img src={founderImg} alt="Founder" style={styles.img} />
+          </div>
+        </div>
 
-      <div style={imgContainerStyle}>
-        <img src={founderImg} alt="Founder" style={imgStyle} />
+        {/* TEXT SIDE */}
+        <div style={styles.textSide}>
+          <span style={styles.label}>Since 2020</span>
+          <h1 style={styles.heading}>The Visionary <br/><span style={{color: '#d4af37'}}>Behind EOS</span></h1>
+          
+          <div style={styles.textBody}>
+            <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#fff', fontSize: '20px'}}>
+              Involved. Flexible. Approachable.
+            </p>
+
+            <p style={{marginBottom: '20px'}}>
+              Clients often describe my approach as collaborative. I prefer working closely 
+              with my partners, involving them in the creative heartbeat of every project.
+            </p>
+
+            <p style={{marginBottom: '20px'}}>
+              Based in Copenhagen, I am a full-time content creator originally from Uganda. 
+              My journey began in 2010 with my own multimedia company in Uganda, 
+              eventually leading to the birth of EOS Limitless Pictures in Denmark in 2020.
+            </p>
+
+            <p>
+              My work is a fusion of global experiences and diverse perspectives, 
+              resulting in still and motion images that push creative boundaries.
+            </p>
+          </div>
+
+          <a
+            href="/contact"
+            style={styles.btn}
+            onMouseEnter={() => setBtnHovered(true)}
+            onMouseLeave={() => setBtnHovered(false)}
+          >
+            Work With Me
+          </a>
+        </div>
+
       </div>
-
-      <div style={textStyle}>
-        <p style={paragraphStyle}>Involved. Flexible. Approachable.</p>
-
-        <p style={paragraphStyle}>
-          Those are some of the words used by clients when describing my approach to professional relations, and me as an individual. I prefer working closely with my clients, and I like to involve them in the creative process.
-        </p>
-
-        <p style={paragraphStyle}>
-          I am based in Copenhagen, where I work as a full-time content creator best expressed through motion and still images. EOS Limitless Pictures was started in Denmark in 2020.
-        </p>
-
-        <p style={paragraphStyle}>
-          I am originally from Uganda, where my creative processes were birthed, but I have lived in Denmark since 2018. In Uganda, I had my own multimedia company as well from 2010.
-        </p>
-
-        <p style={paragraphStyle}>
-          My work illustrates the fusion of different experiences and perspectives on creativity.
-        </p>
-      </div>
-
-      <a
-        href="/contact"
-        style={btnStyle}
-        onMouseEnter={btnHover}
-        onMouseLeave={btnUnhover}
-      >
-        Work With Me
-      </a>
     </section>
   );
 };

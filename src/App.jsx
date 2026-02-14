@@ -9,7 +9,14 @@ import ContactPage from './components/pages/ContactPage';
 import Footer from './components/Footer';
 
 const App = () => (
-  <div style={{ margin: 0, paddingTop: '100px', backgroundColor: '#0f1720', minHeight: '100vh', boxSizing: 'border-box' }}>
+  <div style={{ 
+    margin: 0, 
+    paddingTop: '100px', 
+    /* This creates the dark, transparent 'overlay' over your image */
+    backgroundColor: 'rgba(10, 18, 26, 0.85)', 
+    minHeight: '100vh', 
+    boxSizing: 'border-box' 
+  }}>
     <Header />
     <Routes>
       <Route path="/" element={
