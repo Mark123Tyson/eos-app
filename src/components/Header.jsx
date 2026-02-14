@@ -2,22 +2,29 @@ import React, { useState, useEffect } from 'react';
 import logo from '../assets/logo.png'; 
 
 const Header = () => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isLandscape, setIsLandscape] = useState(window.innerHeight < 500);
 
   useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      // Automatically close mobile menu if we scale up to desktop
+      if (window.innerWidth > 1024) setMenuOpen(false);
+    };
     const handleScroll = () => setScrolled(window.scrollY > 50);
-    const handleResize = () => setIsLandscape(window.innerHeight < 500);
     
-    window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll);
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const isDesktop = screenWidth > 1024;
+  const isLandscape = window.innerHeight < 500 && !isDesktop;
 
   const styles = {
     header: {
@@ -25,35 +32,31 @@ const Header = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      // Slimmer padding if device is flipped sideways
-      padding: isLandscape ? '10px 25px' : '20px 30px',
+      padding: isDesktop ? '15px 80px' : '15px 25px',
       position: 'fixed',
       top: 0,
       left: 0,
       right: 0,
       width: '100%',
       zIndex: 1000,
-      boxShadow: scrolled ? '0 5px 20px rgba(0,0,0,0.5)' : 'none',
       backdropFilter: 'blur(10px)',
       transition: 'all 0.4s ease',
       borderBottom: scrolled ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid transparent',
       boxSizing: 'border-box'
     },
     logo: {
-      width: isLandscape ? '70px' : '90px',
+      width: isDesktop ? '100px' : '80px',
       height: 'auto',
       cursor: 'pointer',
-      transition: 'transform 0.3s ease',
     },
     hamburger: {
-      display: 'flex', // Always visible now
+      display: isDesktop ? 'none' : 'flex', // Hidden on large screens
       flexDirection: 'column',
       justifyContent: 'space-between',
       width: '35px',
       height: '24px',
       cursor: 'pointer',
       zIndex: 1001,
-      userSelect: 'none',
     },
     line: {
       width: '100%',
@@ -61,38 +64,33 @@ const Header = () => {
       backgroundColor: '#d4af37',
       borderRadius: '10px',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      transformOrigin: 'center',
     },
     nav: {
-      // Nav is only visible when menuOpen is true
-      display: menuOpen ? 'flex' : 'none',
-      flexDirection: 'column',
-      position: 'absolute',
-      top: '100%',
+      display: isDesktop ? 'flex' : (menuOpen ? 'flex' : 'none'),
+      flexDirection: isDesktop ? 'row' : 'column',
+      position: isDesktop ? 'static' : 'absolute',
+      top: isDesktop ? 'auto' : '100%',
       left: 0,
       right: 0,
-      backgroundColor: 'rgba(10, 14, 18, 0.98)',
-      gap: isLandscape ? '20px' : '35px',
-      padding: isLandscape ? '30px 0' : '60px 0',
+      backgroundColor: isDesktop ? 'transparent' : 'rgba(10, 14, 18, 0.98)',
+      gap: isDesktop ? '35px' : '30px',
+      padding: isDesktop ? '0' : (isLandscape ? '30px 0' : '60px 0'),
       textAlign: 'center',
-      transition: 'all 0.4s ease-in-out',
-      borderBottom: '2px solid #d4af37',
-      // Ensure long menus are scrollable on short landscape screens
-      maxHeight: isLandscape ? '70vh' : 'none',
-      overflowY: 'auto'
+      alignItems: 'center',
+      borderBottom: (!isDesktop && menuOpen) ? '2px solid #d4af37' : 'none',
     },
     link: {
       color: '#ffffff',
       textDecoration: 'none',
-      fontSize: '20px', 
+      fontSize: isDesktop ? '13px' : '20px', 
       fontWeight: '700',
       textTransform: 'uppercase',
-      letterSpacing: '4px',
+      letterSpacing: isDesktop ? '2px' : '4px',
       cursor: 'pointer',
       transition: 'color 0.3s ease',
       position: 'relative',
-      opacity: menuOpen ? 1 : 0,
-      animation: menuOpen ? 'linkFadeIn 0.5s ease forwards' : 'none'
+      opacity: isDesktop ? 1 : (menuOpen ? 1 : 0),
+      animation: (!isDesktop && menuOpen) ? 'linkFadeIn 0.5s ease forwards' : 'none'
     }
   };
 
@@ -100,9 +98,8 @@ const Header = () => {
     const el = document.getElementById(id);
     if (el) {
       const offset = 80;
-      const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({
-        top: elementPosition - offset,
+        top: el.offsetTop - offset,
         behavior: 'smooth'
       });
       setMenuOpen(false);
@@ -111,28 +108,13 @@ const Header = () => {
 
   return (
     <header style={styles.header}>
-      <img 
-        src={logo} 
-        alt="EOS Logo" 
-        style={styles.logo} 
-        onClick={() => scrollTo('home')}
-      />
+      <img src={logo} alt="EOS Logo" style={styles.logo} onClick={() => scrollTo('home')} />
 
+      {/* HAMBURGER (Only visible on mobile/medium) */}
       <div style={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
-        <div style={{
-          ...styles.line,
-          transform: menuOpen ? 'translateY(10px) rotate(45deg)' : 'none'
-        }} />
-        <div style={{
-          ...styles.line,
-          opacity: menuOpen ? 0 : 1,
-          width: '75%',
-          alignSelf: 'flex-end'
-        }} />
-        <div style={{
-          ...styles.line,
-          transform: menuOpen ? 'translateY(-10px) rotate(-45deg)' : 'none'
-        }} />
+        <div style={{...styles.line, transform: menuOpen ? 'translateY(10px) rotate(45deg)' : 'none'}} />
+        <div style={{...styles.line, opacity: menuOpen ? 0 : 1, width: '75%', alignSelf: 'flex-end'}} />
+        <div style={{...styles.line, transform: menuOpen ? 'translateY(-10px) rotate(-45deg)' : 'none'}} />
       </div>
 
       <nav style={styles.nav}>
@@ -142,7 +124,7 @@ const Header = () => {
             href={`#${id}`}
             style={{
               ...styles.link,
-              animationDelay: `${0.1 + index * 0.1}s`
+              animationDelay: isDesktop ? '0s' : `${0.1 + index * 0.1}s`
             }}
             onMouseEnter={(e) => e.target.style.color = '#d4af37'}
             onMouseLeave={(e) => e.target.style.color = '#ffffff'}
@@ -161,6 +143,23 @@ const Header = () => {
           @keyframes linkFadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+          }
+
+          /* Underline effect only for Desktop */
+          @media (min-width: 1025px) {
+            nav a::after {
+              content: '';
+              position: absolute;
+              width: 0;
+              height: 2px;
+              bottom: -5px;
+              left: 0;
+              background-color: #d4af37;
+              transition: width 0.3s ease;
+            }
+            nav a:hover::after {
+              width: 100%;
+            }
           }
         `}
       </style>
