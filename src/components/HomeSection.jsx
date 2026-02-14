@@ -13,7 +13,7 @@ const HomeSection = () => {
   const scrollToServices = () => {
     const el = document.getElementById("services");
     if (el) {
-      const offset = 80; // Aligned with header height
+      const offset = 80; 
       const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
     }
@@ -28,11 +28,13 @@ const HomeSection = () => {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      justifyContent: "center",
+      // On mobile, we align to the top with padding so it's closer to the header
+      justifyContent: isMobile ? "flex-start" : "center",
+      paddingTop: isMobile ? "120px" : "0", 
       position: "relative",
       color: "#fff",
       overflow: "hidden",
-      backgroundColor: "#050811" // Fallback color
+      backgroundColor: "#050811"
     },
     bgContainer: {
       position: "absolute",
@@ -43,7 +45,6 @@ const HomeSection = () => {
       backgroundImage: `url(${mainImg})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      // Mobile fix: 'scroll' on mobile, 'fixed' on desktop
       backgroundAttachment: isMobile ? "scroll" : "fixed",
       animation: "kenBurns 20s infinite alternate",
       zIndex: 0
@@ -54,52 +55,53 @@ const HomeSection = () => {
       left: 0,
       width: "100%",
       height: "100%",
-      background: "linear-gradient(to bottom, rgba(5, 8, 17, 0.4) 0%, rgba(5, 8, 17, 0.8) 100%)",
+      background: "linear-gradient(to bottom, rgba(5, 8, 17, 0.3) 0%, rgba(5, 8, 17, 0.8) 100%)",
       zIndex: 1
     },
     contentCard: {
       position: "relative",
       zIndex: 2,
-      maxWidth: "90%",
+      maxWidth: "92%",
       width: "850px",
-      padding: isMobile ? "40px 20px" : "60px",
+      // Reduced padding on mobile to save space
+      padding: isMobile ? "30px 15px" : "60px",
       textAlign: "center",
-      backgroundColor: "rgba(10, 14, 18, 0.5)", 
-      backdropFilter: "blur(15px)",
-      WebkitBackdropFilter: "blur(15px)", // Safari fix
-      borderRadius: "4px", // Sharper edges for a Danish look
-      border: "1px solid rgba(212, 175, 55, 0.3)",
+      backgroundColor: "rgba(10, 14, 18, 0.4)", 
+      backdropFilter: "blur(10px)",
+      WebkitBackdropFilter: "blur(10px)",
+      borderRadius: "20px", // Softened to match your new "Lively" theme
+      border: "1px solid rgba(212, 175, 55, 0.2)",
       boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
       animation: "fadeInUp 1.2s ease-out forwards"
     },
     heading: {
-      fontSize: isMobile ? "34px" : "64px",
+      fontSize: isMobile ? "28px" : "64px", // Shrunk slightly for mobile
       fontWeight: "900",
       marginBottom: "10px",
-      letterSpacing: isMobile ? "2px" : "6px",
+      letterSpacing: isMobile ? "1px" : "6px",
       textTransform: "uppercase",
       lineHeight: 1.1
     },
     accent: {
       color: "#d4af37",
-      display: isMobile ? "block" : "inline" // Stack on mobile for impact
+      display: "inline" 
     },
     subheading: {
-      fontSize: isMobile ? "13px" : "18px",
-      marginBottom: "40px",
+      fontSize: isMobile ? "11px" : "18px",
+      marginBottom: isMobile ? "25px" : "40px",
       color: "#cbd5e1",
-      letterSpacing: "5px",
+      letterSpacing: isMobile ? "3px" : "5px",
       fontWeight: "400",
       textTransform: "uppercase"
     },
     ctaButton: {
       display: "inline-block",
-      padding: "16px 40px",
-      fontSize: "13px",
+      padding: isMobile ? "14px 30px" : "16px 40px",
+      fontSize: isMobile ? "11px" : "13px",
       fontWeight: "bold",
       color: "#0a0e12",
       backgroundColor: "#d4af37",
-      borderRadius: "2px", // Square buttons feel more "Cinema Pro"
+      borderRadius: "12px", // Matches the new softer vibe
       cursor: "pointer",
       letterSpacing: "3px",
       transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -122,7 +124,7 @@ const HomeSection = () => {
             100% { transform: translateY(0px) rotate(45deg); }
           }
           @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
           }
         `}
@@ -157,30 +159,32 @@ const HomeSection = () => {
           </div>
         </div>
 
-        {/* Cinematic Arrow Indicator */}
-        <div 
-          onClick={scrollToServices}
-          style={{
-            position: "absolute",
-            bottom: "30px",
-            zIndex: 3,
-            cursor: "pointer",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            opacity: 0.8
-          }}
-        >
-          <span style={{ fontSize: '10px', letterSpacing: '3px', marginBottom: '10px' }}>SCROLL</span>
-          <div style={{
-            width: "12px",
-            height: "12px",
-            borderBottom: "2px solid #d4af37",
-            borderRight: "2px solid #d4af37",
-            transform: "rotate(45deg)",
-            animation: "float 2s infinite"
-          }}></div>
-        </div>
+        {/* Scroll Indicator - Hidden if it crowds the card on small screens */}
+        {!isMobile && (
+          <div 
+            onClick={scrollToServices}
+            style={{
+              position: "absolute",
+              bottom: "30px",
+              zIndex: 3,
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              opacity: 0.8
+            }}
+          >
+            <span style={{ fontSize: '10px', letterSpacing: '3px', marginBottom: '10px' }}>SCROLL</span>
+            <div style={{
+              width: "12px",
+              height: "12px",
+              borderBottom: "2px solid #d4af37",
+              borderRight: "2px solid #d4af37",
+              transform: "rotate(45deg)",
+              animation: "float 2s infinite"
+            }}></div>
+          </div>
+        )}
       </section>
     </>
   );
