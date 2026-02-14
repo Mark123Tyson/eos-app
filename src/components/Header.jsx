@@ -27,7 +27,7 @@ const Header = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: isMobile ? '15px 20px' : '15px 50px',
+      padding: isMobile ? '15px 25px' : '15px 50px',
       position: 'fixed',
       top: 0,
       left: 0,
@@ -41,12 +41,30 @@ const Header = () => {
       boxSizing: 'border-box'
     },
     logo: {
-      width: isMobile ? '75px' : '90px',
+      width: isMobile ? '80px' : '100px',
       height: 'auto',
       cursor: 'pointer',
       transition: 'transform 0.3s ease',
       borderRadius: '8px',
-      overflow: 'hidden'
+    },
+    hamburger: {
+      display: isMobile ? 'flex' : 'none',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      width: '35px',   // Width of the icon
+      height: '24px',  // Height of the stack
+      cursor: 'pointer',
+      zIndex: 1001,
+      userSelect: 'none',
+      transition: 'all 0.3s ease',
+    },
+    line: {
+      width: '100%',
+      height: '4px', // Thicker lines for visibility
+      backgroundColor: '#d4af37',
+      borderRadius: '10px',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      transformOrigin: 'center',
     },
     nav: {
       display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
@@ -56,34 +74,24 @@ const Header = () => {
       left: 0,
       right: 0,
       backgroundColor: isMobile ? 'rgba(10, 14, 18, 0.98)' : 'transparent',
-      gap: isMobile ? '35px' : '35px',
+      gap: isMobile ? '30px' : '35px',
       padding: isMobile ? '60px 0' : '0',
       textAlign: 'center',
-      transition: 'all 0.3s ease-in-out',
+      transition: 'all 0.4s ease-in-out',
       borderBottom: isMobile && menuOpen ? '2px solid #d4af37' : 'none',
     },
     link: {
       color: '#ffffff',
       textDecoration: 'none',
-      fontSize: isMobile ? '18px' : '14px', // Increased mobile size
+      fontSize: isMobile ? '20px' : '14px', // Larger font for mobile links
       fontWeight: '700',
       textTransform: 'uppercase',
-      letterSpacing: '3px',
+      letterSpacing: '4px',
       cursor: 'pointer',
       transition: 'color 0.3s ease',
       position: 'relative',
-      // Animation logic
       opacity: isMobile && !menuOpen ? 0 : 1,
-      animation: isMobile && menuOpen ? 'linkFadeIn 0.6s ease forwards' : 'none'
-    },
-    hamburger: {
-      fontSize: isMobile ? '45px' : '30px', // Big icon for mobile
-      color: '#d4af37',
-      cursor: 'pointer',
-      display: isMobile ? 'block' : 'none',
-      transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-      userSelect: 'none',
-      padding: '5px'
+      animation: isMobile && menuOpen ? 'linkFadeIn 0.5s ease forwards' : 'none'
     }
   };
 
@@ -92,10 +100,8 @@ const Header = () => {
     if (el) {
       const offset = 80;
       const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - offset;
-
       window.scrollTo({
-        top: offsetPosition,
+        top: elementPosition - offset,
         behavior: 'smooth'
       });
       setMenuOpen(false);
@@ -111,14 +117,25 @@ const Header = () => {
         onClick={() => scrollTo('home')}
       />
 
-      <div
-        style={{
-          ...styles.hamburger,
-          transform: menuOpen ? 'rotate(90deg)' : 'rotate(0)'
-        }}
+      {/* CUSTOM CSS HAMBURGER */}
+      <div 
+        style={styles.hamburger} 
         onClick={() => setMenuOpen(!menuOpen)}
       >
-        {menuOpen ? '✕' : '☰'}
+        <div style={{
+          ...styles.line,
+          transform: menuOpen ? 'translateY(10px) rotate(45deg)' : 'none'
+        }} />
+        <div style={{
+          ...styles.line,
+          opacity: menuOpen ? 0 : 1,
+          width: '75%',
+          alignSelf: 'flex-end'
+        }} />
+        <div style={{
+          ...styles.line,
+          transform: menuOpen ? 'translateY(-10px) rotate(-45deg)' : 'none'
+        }} />
       </div>
 
       <nav style={styles.nav}>
@@ -128,7 +145,7 @@ const Header = () => {
             href={`#${id}`}
             style={{
               ...styles.link,
-              animationDelay: isMobile ? `${0.1 + index * 0.1}s` : '0s'
+              animationDelay: isMobile ? `${0.2 + index * 0.1}s` : '0s'
             }}
             onMouseEnter={(e) => e.target.style.color = '#d4af37'}
             onMouseLeave={(e) => e.target.style.color = '#ffffff'}
@@ -145,14 +162,8 @@ const Header = () => {
       <style>
         {`
           @keyframes linkFadeIn {
-            from { 
-              opacity: 0; 
-              transform: translateY(20px); 
-            }
-            to { 
-              opacity: 1; 
-              transform: translateY(0); 
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
           }
 
           @media (min-width: 769px) {
