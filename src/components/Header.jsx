@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 
 const Header = () => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = screenWidth <= 768;
+
   const headerStyle = {
     backgroundColor: '#1a1f29',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '15px 40px',
+    padding: '15px 20px',
     position: 'fixed',
     top: 0,
     left: 0,
@@ -17,35 +28,69 @@ const Header = () => {
     backdropFilter: 'blur(5px)'
   };
 
-  const logoStyle = { width: '100px', height: 'auto' };
-  const navStyle = { display: 'flex', gap: '30px', fontWeight: 'bold' };
+  const logoStyle = {
+    width: isMobile ? '80px' : '100px',
+    height: 'auto'
+  };
+
+  const navStyle = {
+    display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
+    flexDirection: isMobile ? 'column' : 'row',
+    position: isMobile ? 'absolute' : 'static',
+    top: isMobile ? '70px' : 'auto',
+    left: 0,
+    right: 0,
+    backgroundColor: isMobile ? '#1a1f29' : 'transparent',
+    gap: isMobile ? '20px' : '30px',
+    padding: isMobile ? '20px 0' : '0',
+    textAlign: 'center',
+    fontWeight: 'bold'
+  };
+
   const linkStyle = {
     color: '#f0d36f',
     textDecoration: 'none',
-    transition: 'color 0.3s ease, transform 0.2s ease',
+    fontSize: isMobile ? '16px' : '16px',
     cursor: 'pointer'
+  };
+
+  const hamburgerStyle = {
+    fontSize: '28px',
+    color: '#f0d36f',
+    cursor: 'pointer',
+    display: isMobile ? 'block' : 'none'
   };
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setMenuOpen(false); // close menu after click
+    }
   };
-
-  const hoverLink = (e) => { e.target.style.color = '#d4af37'; e.target.style.transform = 'scale(1.05)'; };
-  const unhoverLink = (e) => { e.target.style.color = '#f0d36f'; e.target.style.transform = 'scale(1)'; };
 
   return (
     <header style={headerStyle}>
       <img src={logo} alt="EOS Logo" style={logoStyle} />
+
+      {/* Hamburger Icon */}
+      <div
+        style={hamburgerStyle}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? '✕' : '☰'}
+      </div>
+
       <nav style={navStyle}>
         {['home', 'services', 'photography', 'about', 'contact'].map((id) => (
           <a
             key={id}
             href={`#${id}`}
             style={linkStyle}
-            onClick={(e) => { e.preventDefault(); scrollTo(id); }}
-            onMouseEnter={hoverLink}
-            onMouseLeave={unhoverLink}
+            onClick={(e) => {
+              e.preventDefault();
+              scrollTo(id);
+            }}
           >
             {id.charAt(0).toUpperCase() + id.slice(1)}
           </a>

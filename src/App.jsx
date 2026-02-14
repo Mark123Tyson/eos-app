@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import HeroSection from './components/HeroSection';
+import HomeSection from './components/HomeSection';
 import ProductsSection from './components/ProductsSection';
 import About from './components/About';
 import Photography from './components/pages/Photography';
@@ -14,7 +14,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={
         <>
-          <div id="home"><HeroSection /></div>
+          <div id="home"><HomeSection /></div>
           <div id="services"><ProductsSection /></div>
           <div id="photography"><Photography /></div>
           <div id="about"><About /></div>
