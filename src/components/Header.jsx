@@ -2,24 +2,22 @@ import React, { useState, useEffect } from 'react';
 import logo from '../assets/logo.png'; 
 
 const Header = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(window.innerHeight < 500);
 
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
     const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleResize = () => setIsLandscape(window.innerHeight < 500);
     
-    window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
     
     return () => {
-      window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  const isMobile = screenWidth <= 768;
 
   const styles = {
     header: {
@@ -27,7 +25,8 @@ const Header = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: isMobile ? '15px 25px' : '15px 50px',
+      // Slimmer padding if device is flipped sideways
+      padding: isLandscape ? '10px 25px' : '20px 30px',
       position: 'fixed',
       top: 0,
       left: 0,
@@ -41,57 +40,59 @@ const Header = () => {
       boxSizing: 'border-box'
     },
     logo: {
-      width: isMobile ? '80px' : '100px',
+      width: isLandscape ? '70px' : '90px',
       height: 'auto',
       cursor: 'pointer',
       transition: 'transform 0.3s ease',
-      borderRadius: '8px',
     },
     hamburger: {
-      display: isMobile ? 'flex' : 'none',
+      display: 'flex', // Always visible now
       flexDirection: 'column',
       justifyContent: 'space-between',
-      width: '35px',   // Width of the icon
-      height: '24px',  // Height of the stack
+      width: '35px',
+      height: '24px',
       cursor: 'pointer',
       zIndex: 1001,
       userSelect: 'none',
-      transition: 'all 0.3s ease',
     },
     line: {
       width: '100%',
-      height: '4px', // Thicker lines for visibility
+      height: '4px',
       backgroundColor: '#d4af37',
       borderRadius: '10px',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       transformOrigin: 'center',
     },
     nav: {
-      display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      position: isMobile ? 'absolute' : 'static',
-      top: isMobile ? '100%' : 'auto',
+      // Nav is only visible when menuOpen is true
+      display: menuOpen ? 'flex' : 'none',
+      flexDirection: 'column',
+      position: 'absolute',
+      top: '100%',
       left: 0,
       right: 0,
-      backgroundColor: isMobile ? 'rgba(10, 14, 18, 0.98)' : 'transparent',
-      gap: isMobile ? '30px' : '35px',
-      padding: isMobile ? '60px 0' : '0',
+      backgroundColor: 'rgba(10, 14, 18, 0.98)',
+      gap: isLandscape ? '20px' : '35px',
+      padding: isLandscape ? '30px 0' : '60px 0',
       textAlign: 'center',
       transition: 'all 0.4s ease-in-out',
-      borderBottom: isMobile && menuOpen ? '2px solid #d4af37' : 'none',
+      borderBottom: '2px solid #d4af37',
+      // Ensure long menus are scrollable on short landscape screens
+      maxHeight: isLandscape ? '70vh' : 'none',
+      overflowY: 'auto'
     },
     link: {
       color: '#ffffff',
       textDecoration: 'none',
-      fontSize: isMobile ? '20px' : '14px', // Larger font for mobile links
+      fontSize: '20px', 
       fontWeight: '700',
       textTransform: 'uppercase',
       letterSpacing: '4px',
       cursor: 'pointer',
       transition: 'color 0.3s ease',
       position: 'relative',
-      opacity: isMobile && !menuOpen ? 0 : 1,
-      animation: isMobile && menuOpen ? 'linkFadeIn 0.5s ease forwards' : 'none'
+      opacity: menuOpen ? 1 : 0,
+      animation: menuOpen ? 'linkFadeIn 0.5s ease forwards' : 'none'
     }
   };
 
@@ -117,11 +118,7 @@ const Header = () => {
         onClick={() => scrollTo('home')}
       />
 
-      {/* CUSTOM CSS HAMBURGER */}
-      <div 
-        style={styles.hamburger} 
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
+      <div style={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
         <div style={{
           ...styles.line,
           transform: menuOpen ? 'translateY(10px) rotate(45deg)' : 'none'
@@ -145,7 +142,7 @@ const Header = () => {
             href={`#${id}`}
             style={{
               ...styles.link,
-              animationDelay: isMobile ? `${0.2 + index * 0.1}s` : '0s'
+              animationDelay: `${0.1 + index * 0.1}s`
             }}
             onMouseEnter={(e) => e.target.style.color = '#d4af37'}
             onMouseLeave={(e) => e.target.style.color = '#ffffff'}
@@ -164,22 +161,6 @@ const Header = () => {
           @keyframes linkFadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-          }
-
-          @media (min-width: 769px) {
-            nav a::after {
-              content: '';
-              position: absolute;
-              width: 0;
-              height: 2px;
-              bottom: -5px;
-              left: 0;
-              background-color: #d4af37;
-              transition: width 0.3s ease;
-            }
-            nav a:hover::after {
-              width: 100%;
-            }
           }
         `}
       </style>

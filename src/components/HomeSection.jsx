@@ -21,16 +21,17 @@ const HomeSection = () => {
 
   const styles = {
     section: {
-      height: "100vh",
-      width: "100%",
+      // FIX: Use minHeight so it doesn't force extra empty space below content
+      minHeight: isMobile ? "auto" : "100vh",
+      height: isMobile ? "auto" : "100vh",
+      width: "100vw", // Use viewport width to prevent white side bars
       margin: 0,
-      padding: 0,
+      // Increased bottom padding on mobile for a clean transition to next section
+      padding: isMobile ? "100px 0 60px 0" : "0", 
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      // On mobile, we align to the top with padding so it's closer to the header
-      justifyContent: isMobile ? "flex-start" : "center",
-      paddingTop: isMobile ? "120px" : "0", 
+      justifyContent: "center",
       position: "relative",
       color: "#fff",
       overflow: "hidden",
@@ -45,7 +46,8 @@ const HomeSection = () => {
       backgroundImage: `url(${mainImg})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      backgroundAttachment: isMobile ? "scroll" : "fixed",
+      // Fixed attachment often causes "jumps" on mobile browsers
+      backgroundAttachment: "scroll", 
       animation: "kenBurns 20s infinite alternate",
       zIndex: 0
     },
@@ -55,7 +57,7 @@ const HomeSection = () => {
       left: 0,
       width: "100%",
       height: "100%",
-      background: "linear-gradient(to bottom, rgba(5, 8, 17, 0.3) 0%, rgba(5, 8, 17, 0.8) 100%)",
+      background: "linear-gradient(to bottom, rgba(5, 8, 17, 0.3) 0%, rgba(5, 8, 17, 0.95) 100%)",
       zIndex: 1
     },
     contentCard: {
@@ -63,22 +65,21 @@ const HomeSection = () => {
       zIndex: 2,
       maxWidth: "92%",
       width: "850px",
-      // Reduced padding on mobile to save space
-      padding: isMobile ? "30px 15px" : "60px",
+      padding: isMobile ? "40px 20px" : "60px",
       textAlign: "center",
       backgroundColor: "rgba(10, 14, 18, 0.4)", 
       backdropFilter: "blur(10px)",
       WebkitBackdropFilter: "blur(10px)",
-      borderRadius: "20px", // Softened to match your new "Lively" theme
+      borderRadius: "20px",
       border: "1px solid rgba(212, 175, 55, 0.2)",
       boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
       animation: "fadeInUp 1.2s ease-out forwards"
     },
     heading: {
-      fontSize: isMobile ? "28px" : "64px", // Shrunk slightly for mobile
+      fontSize: isMobile ? "32px" : "64px",
       fontWeight: "900",
       marginBottom: "10px",
-      letterSpacing: isMobile ? "1px" : "6px",
+      letterSpacing: isMobile ? "2px" : "6px",
       textTransform: "uppercase",
       lineHeight: 1.1
     },
@@ -87,8 +88,8 @@ const HomeSection = () => {
       display: "inline" 
     },
     subheading: {
-      fontSize: isMobile ? "11px" : "18px",
-      marginBottom: isMobile ? "25px" : "40px",
+      fontSize: isMobile ? "12px" : "18px",
+      marginBottom: isMobile ? "30px" : "40px",
       color: "#cbd5e1",
       letterSpacing: isMobile ? "3px" : "5px",
       fontWeight: "400",
@@ -96,12 +97,12 @@ const HomeSection = () => {
     },
     ctaButton: {
       display: "inline-block",
-      padding: isMobile ? "14px 30px" : "16px 40px",
-      fontSize: isMobile ? "11px" : "13px",
+      padding: isMobile ? "16px 32px" : "16px 40px",
+      fontSize: isMobile ? "12px" : "13px",
       fontWeight: "bold",
       color: "#0a0e12",
       backgroundColor: "#d4af37",
-      borderRadius: "12px", // Matches the new softer vibe
+      borderRadius: "12px",
       cursor: "pointer",
       letterSpacing: "3px",
       transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -159,7 +160,7 @@ const HomeSection = () => {
           </div>
         </div>
 
-        {/* Scroll Indicator - Hidden if it crowds the card on small screens */}
+        {/* Hide indicator on mobile so it doesn't create extra vertical space */}
         {!isMobile && (
           <div 
             onClick={scrollToServices}
