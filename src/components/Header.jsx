@@ -17,17 +17,8 @@ const Header = () => {
     backdropFilter: 'blur(5px)'
   };
 
-  const logoStyle = {
-    width: '100px',
-    height: 'auto'
-  };
-
-  const navStyle = {
-    display: 'flex',
-    gap: '30px',
-    fontWeight: 'bold'
-  };
-
+  const logoStyle = { width: '100px', height: 'auto' };
+  const navStyle = { display: 'flex', gap: '30px', fontWeight: 'bold' };
   const linkStyle = {
     color: '#f0d36f',
     textDecoration: 'none',
@@ -36,58 +27,29 @@ const Header = () => {
   };
 
   const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const hoverLink = (e) => {
-    e.target.style.color = '#d4af37';
-    e.target.style.transform = 'scale(1.05)';
-  };
-
-  const unhoverLink = (e) => {
-    e.target.style.color = '#f0d36f';
-    e.target.style.transform = 'scale(1)';
-  };
+  const hoverLink = (e) => { e.target.style.color = '#d4af37'; e.target.style.transform = 'scale(1.05)'; };
+  const unhoverLink = (e) => { e.target.style.color = '#f0d36f'; e.target.style.transform = 'scale(1)'; };
 
   return (
     <header style={headerStyle}>
-      <img src={logo} alt="EOS Limitless Pictures Logo" style={logoStyle} />
+      <img src={logo} alt="EOS Logo" style={logoStyle} />
       <nav style={navStyle}>
-        <a 
-          href="#home" 
-          style={linkStyle} 
-          onClick={(e) => { e.preventDefault(); scrollTo('home'); }} 
-          onMouseEnter={hoverLink} 
-          onMouseLeave={unhoverLink}
-        >Home</a>
-        <a 
-          href="#services" 
-          style={linkStyle} 
-          onClick={(e) => { e.preventDefault(); scrollTo('services'); }} 
-          onMouseEnter={hoverLink} 
-          onMouseLeave={unhoverLink}
-        >Services</a>
-        <a 
-          href="#photography" 
-          style={linkStyle} 
-          onClick={(e) => { e.preventDefault(); scrollTo('photography'); }} 
-          onMouseEnter={hoverLink} 
-          onMouseLeave={unhoverLink}
-        >Photography</a>
-        <a 
-          href="#about" 
-          style={linkStyle} 
-          onClick={(e) => { e.preventDefault(); scrollTo('about'); }} 
-          onMouseEnter={hoverLink} 
-          onMouseLeave={unhoverLink}
-        >About</a>
-        <a 
-          href="#contact" 
-          style={linkStyle} 
-          onClick={(e) => { e.preventDefault(); scrollTo('contact'); }} 
-          onMouseEnter={hoverLink} 
-          onMouseLeave={unhoverLink}
-        >Contact</a>
+        {['home', 'services', 'photography', 'about', 'contact'].map((id) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            style={linkStyle}
+            onClick={(e) => { e.preventDefault(); scrollTo(id); }}
+            onMouseEnter={hoverLink}
+            onMouseLeave={unhoverLink}
+          >
+            {id.charAt(0).toUpperCase() + id.slice(1)}
+          </a>
+        ))}
       </nav>
     </header>
   );
