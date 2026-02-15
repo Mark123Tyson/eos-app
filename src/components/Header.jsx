@@ -4,9 +4,8 @@ import logo from '../assets/logo.png';
 const Header = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [visible, setVisible] = useState(true); // Controls the "Appear/Hide"
+  const [visible, setVisible] = useState(true); 
   const [scrolled, setScrolled] = useState(false);
-  
   const scrollTimer = useRef(null);
 
   useEffect(() => {
@@ -16,26 +15,20 @@ const Header = () => {
     };
 
     const handleScroll = () => {
-      // 1. Check if we've scrolled past the hero
       setScrolled(window.scrollY > 50);
-
-      // 2. Medium/Small device logic: Hide while moving
       if (window.innerWidth <= 1024) {
-        setVisible(false); // Hide immediately on scroll start
-
-        // 3. Clear existing timer and set a new one
+        setVisible(false); 
         clearTimeout(scrollTimer.current);
         scrollTimer.current = setTimeout(() => {
-          setVisible(true); // Show when scroll stops
-        }, 150); // Delay in milliseconds after stop
+          setVisible(true); 
+        }, 150); 
       } else {
-        setVisible(true); // Always visible on Desktop
+        setVisible(true); 
       }
     };
 
     window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll);
-    
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
@@ -62,7 +55,6 @@ const Header = () => {
       backdropFilter: 'blur(10px)',
       borderBottom: scrolled ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid transparent',
       boxSizing: 'border-box',
-      // THE MAGIC: Transition for hiding/showing
       transition: 'transform 0.4s ease, background-color 0.4s ease, opacity 0.4s ease',
       transform: visible ? 'translateY(0)' : 'translateY(-100%)',
       opacity: visible ? 1 : 0,
@@ -71,10 +63,10 @@ const Header = () => {
       width: isDesktop ? '100px' : '80px',
       height: 'auto',
       cursor: 'pointer',
-      borderRadius: '25% 0% 25% 0%', // Unique shape for the logo
+      borderRadius: '25% 0% 25% 0%',
       transition: 'all 0.3s ease',
+      border: scrolled ? '1px solid rgba(212, 175, 55, 0.4)' : '1px solid transparent',
     },
-    // ... (rest of the styles stay the same as previous Header code)
     hamburger: {
       display: isDesktop ? 'none' : 'flex',
       flexDirection: 'column',
@@ -103,6 +95,7 @@ const Header = () => {
       padding: isDesktop ? '0' : (isLandscape ? '30px 0' : '60px 0'),
       textAlign: 'center',
       alignItems: 'center',
+      borderBottom: (!isDesktop && menuOpen) ? '2px solid #d4af37' : 'none',
     },
     link: {
       color: '#ffffff',
@@ -113,6 +106,9 @@ const Header = () => {
       letterSpacing: isDesktop ? '2px' : '4px',
       cursor: 'pointer',
       transition: 'color 0.3s ease',
+      position: 'relative', // Necessary for the absolute underline
+      opacity: isDesktop ? 1 : (menuOpen ? 1 : 0),
+      animation: (!isDesktop && menuOpen) ? 'linkFadeIn 0.5s ease forwards' : 'none'
     }
   };
 
@@ -127,7 +123,12 @@ const Header = () => {
 
   return (
     <header style={styles.header}>
-      <img src={logo} alt="EOS Logo" style={styles.logo} onClick={() => scrollTo('home')} />
+      <img 
+        src={logo} 
+        alt="EOS Logo" 
+        style={styles.logo} 
+        onClick={() => scrollTo('home')} 
+      />
 
       <div style={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
         <div style={{...styles.line, transform: menuOpen ? 'translateY(10px) rotate(45deg)' : 'none'}} />
@@ -136,11 +137,14 @@ const Header = () => {
       </div>
 
       <nav style={styles.nav}>
-        {['home', 'services', 'photography', 'about', 'contact'].map((id) => (
+        {['home', 'services', 'photography', 'about', 'contact'].map((id, index) => (
           <a
             key={id}
             href={`#${id}`}
-            style={styles.link}
+            style={{
+                ...styles.link,
+                animationDelay: isDesktop ? '0s' : `${0.1 + index * 0.1}s`
+            }}
             onMouseEnter={(e) => e.target.style.color = '#d4af37'}
             onMouseLeave={(e) => e.target.style.color = '#ffffff'}
             onClick={(e) => { e.preventDefault(); scrollTo(id); }}
@@ -149,6 +153,32 @@ const Header = () => {
           </a>
         ))}
       </nav>
+
+      <style>
+        {`
+          @keyframes linkFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          /* The Hover Underline Effect */
+          @media (min-width: 1025px) {
+            nav a::after {
+              content: '';
+              position: absolute;
+              width: 0;
+              height: 2px;
+              bottom: -5px;
+              left: 0;
+              background-color: #d4af37;
+              transition: width 0.3s ease;
+            }
+            nav a:hover::after {
+              width: 100%;
+            }
+          }
+        `}
+      </style>
     </header>
   );
 };
