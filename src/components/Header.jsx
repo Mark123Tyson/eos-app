@@ -71,7 +71,7 @@ const Header = () => {
       width: isDesktop ? '100px' : '80px',
       height: 'auto',
       cursor: 'pointer',
-      borderRadius: '25% 0% 0% 25%',
+      borderRadius: '25% 0% 25% 0%', // Unique shape for the logo
       transition: 'all 0.3s ease',
     },
     // ... (rest of the styles stay the same as previous Header code)
