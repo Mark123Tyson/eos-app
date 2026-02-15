@@ -1,25 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/logo.png'; 
 
 const Header = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [visible, setVisible] = useState(true); // Controls the "Appear/Hide"
   const [scrolled, setScrolled] = useState(false);
+  
+  const scrollTimer = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
-      // Automatically close mobile menu if we scale up to desktop
       if (window.innerWidth > 1024) setMenuOpen(false);
     };
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    
+
+    const handleScroll = () => {
+      // 1. Check if we've scrolled past the hero
+      setScrolled(window.scrollY > 50);
+
+      // 2. Medium/Small device logic: Hide while moving
+      if (window.innerWidth <= 1024) {
+        setVisible(false); // Hide immediately on scroll start
+
+        // 3. Clear existing timer and set a new one
+        clearTimeout(scrollTimer.current);
+        scrollTimer.current = setTimeout(() => {
+          setVisible(true); // Show when scroll stops
+        }, 150); // Delay in milliseconds after stop
+      } else {
+        setVisible(true); // Always visible on Desktop
+      }
+    };
+
     window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll);
     
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimer.current);
     };
   }, []);
 
@@ -40,17 +60,23 @@ const Header = () => {
       width: '100%',
       zIndex: 1000,
       backdropFilter: 'blur(10px)',
-      transition: 'all 0.4s ease',
       borderBottom: scrolled ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid transparent',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      // THE MAGIC: Transition for hiding/showing
+      transition: 'transform 0.4s ease, background-color 0.4s ease, opacity 0.4s ease',
+      transform: visible ? 'translateY(0)' : 'translateY(-100%)',
+      opacity: visible ? 1 : 0,
     },
     logo: {
       width: isDesktop ? '100px' : '80px',
       height: 'auto',
       cursor: 'pointer',
+      borderRadius: '25% 0% 0% 25%',
+      transition: 'all 0.3s ease',
     },
+    // ... (rest of the styles stay the same as previous Header code)
     hamburger: {
-      display: isDesktop ? 'none' : 'flex', // Hidden on large screens
+      display: isDesktop ? 'none' : 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
       width: '35px',
@@ -77,7 +103,6 @@ const Header = () => {
       padding: isDesktop ? '0' : (isLandscape ? '30px 0' : '60px 0'),
       textAlign: 'center',
       alignItems: 'center',
-      borderBottom: (!isDesktop && menuOpen) ? '2px solid #d4af37' : 'none',
     },
     link: {
       color: '#ffffff',
@@ -88,9 +113,6 @@ const Header = () => {
       letterSpacing: isDesktop ? '2px' : '4px',
       cursor: 'pointer',
       transition: 'color 0.3s ease',
-      position: 'relative',
-      opacity: isDesktop ? 1 : (menuOpen ? 1 : 0),
-      animation: (!isDesktop && menuOpen) ? 'linkFadeIn 0.5s ease forwards' : 'none'
     }
   };
 
@@ -98,10 +120,7 @@ const Header = () => {
     const el = document.getElementById(id);
     if (el) {
       const offset = 80;
-      window.scrollTo({
-        top: el.offsetTop - offset,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: el.offsetTop - offset, behavior: 'smooth' });
       setMenuOpen(false);
     }
   };
@@ -110,7 +129,6 @@ const Header = () => {
     <header style={styles.header}>
       <img src={logo} alt="EOS Logo" style={styles.logo} onClick={() => scrollTo('home')} />
 
-      {/* HAMBURGER (Only visible on mobile/medium) */}
       <div style={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
         <div style={{...styles.line, transform: menuOpen ? 'translateY(10px) rotate(45deg)' : 'none'}} />
         <div style={{...styles.line, opacity: menuOpen ? 0 : 1, width: '75%', alignSelf: 'flex-end'}} />
@@ -118,51 +136,19 @@ const Header = () => {
       </div>
 
       <nav style={styles.nav}>
-        {['home', 'services', 'photography', 'about', 'contact'].map((id, index) => (
+        {['home', 'services', 'photography', 'about', 'contact'].map((id) => (
           <a
             key={id}
             href={`#${id}`}
-            style={{
-              ...styles.link,
-              animationDelay: isDesktop ? '0s' : `${0.1 + index * 0.1}s`
-            }}
+            style={styles.link}
             onMouseEnter={(e) => e.target.style.color = '#d4af37'}
             onMouseLeave={(e) => e.target.style.color = '#ffffff'}
-            onClick={(e) => {
-              e.preventDefault();
-              scrollTo(id);
-            }}
+            onClick={(e) => { e.preventDefault(); scrollTo(id); }}
           >
             {id}
           </a>
         ))}
       </nav>
-
-      <style>
-        {`
-          @keyframes linkFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-
-          /* Underline effect only for Desktop */
-          @media (min-width: 1025px) {
-            nav a::after {
-              content: '';
-              position: absolute;
-              width: 0;
-              height: 2px;
-              bottom: -5px;
-              left: 0;
-              background-color: #d4af37;
-              transition: width 0.3s ease;
-            }
-            nav a:hover::after {
-              width: 100%;
-            }
-          }
-        `}
-      </style>
     </header>
   );
 };

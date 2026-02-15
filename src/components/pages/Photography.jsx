@@ -16,8 +16,10 @@ const ServiceExample = () => {
   const styles = {
     wrapper: {
       width: '100%',
-      backgroundColor: '#050811', // Matching your "Night Sky" background
-      padding: isMobile ? '60px 0' : '100px 0',
+      backgroundColor: '#050811',
+      // REDUCED PADDING: Tightened to prevent the "hanging" look
+      padding: isMobile ? '30px 0' : '50px 0', 
+      margin: 0, // Ensure no margin is pushing sections away
       display: 'flex',
       justifyContent: 'center',
       overflow: 'hidden'
@@ -28,24 +30,23 @@ const ServiceExample = () => {
       backgroundColor: '#0a0e12',
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
-      borderRadius: '4px', // Matches the Danish sharp aesthetic
+      borderRadius: '4px',
       border: '1px solid rgba(212, 175, 55, 0.2)',
       overflow: 'hidden',
       boxShadow: '0 40px 100px rgba(0,0,0,0.8)',
-      padding: isMobile ? '0' : '10px', // No padding on mobile for full-width feel
+      padding: isMobile ? '0' : '10px',
     },
     textSide: {
       flex: '1',
-      padding: isMobile ? '60px 30px' : '80px 60px',
+      padding: isMobile ? '50px 25px' : '70px 50px', // Slightly tightened text padding
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: isMobile ? 'center' : 'flex-start', // Center on mobile, left on desk
+      alignItems: isMobile ? 'center' : 'flex-start',
       textAlign: isMobile ? 'center' : 'left',
       backgroundColor: '#0d1218',
       position: 'relative',
       overflow: 'hidden',
-      // The "Sand Crystal" pattern we used in Products
       backgroundImage: `radial-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 0)`,
       backgroundSize: '40px 40px',
     },
@@ -55,23 +56,23 @@ const ServiceExample = () => {
       letterSpacing: '6px',
       fontSize: '11px',
       fontWeight: 'bold',
-      marginBottom: '20px',
+      marginBottom: '15px',
       position: 'relative',
       zIndex: 2,
     },
     heading: {
-      fontSize: isMobile ? '36px' : '48px',
+      fontSize: isMobile ? '32px' : '44px', // Slightly smaller to keep it tight
       fontWeight: '900',
       color: '#fff',
-      margin: '0 0 25px 0',
+      margin: '0 0 20px 0',
       lineHeight: '1.1',
       textTransform: 'uppercase',
       position: 'relative',
       zIndex: 2,
     },
     description: {
-      fontSize: '16px',
-      lineHeight: '1.8',
+      fontSize: '15px',
+      lineHeight: '1.7',
       color: '#94a3b8',
       margin: 0,
       maxWidth: '450px',
@@ -79,7 +80,7 @@ const ServiceExample = () => {
       zIndex: 2,
     },
     imageSide: {
-      flex: '1.2', // Slightly wider image side for impact
+      flex: '1.2',
       position: 'relative',
       cursor: 'pointer',
       overflow: 'hidden',
@@ -89,7 +90,6 @@ const ServiceExample = () => {
       height: '100%',
       position: 'relative',
       transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-      // Responsive ClipPath
       clipPath: isMobile 
         ? 'none' 
         : 'polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)', 
@@ -98,12 +98,12 @@ const ServiceExample = () => {
     img: {
       width: '100%',
       height: '100%',
-      minHeight: isMobile ? '400px' : '550px',
+      minHeight: isMobile ? '350px' : '500px', // Tightened min-height
       objectFit: 'cover',
       display: 'block',
       transition: 'transform 1.5s ease, filter 1s ease',
       transform: hovered ? 'scale(1.1)' : 'scale(1)',
-      filter: hovered ? 'brightness(0.5) contrast(1.1)' : 'brightness(0.7)',
+      filter: hovered ? 'brightness(0.4) contrast(1.1)' : 'brightness(0.6)',
     },
     overlay: {
       position: 'absolute',
@@ -115,23 +115,23 @@ const ServiceExample = () => {
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 3,
-      background: hovered ? 'rgba(0,0,0,0.2)' : 'transparent',
-      transition: 'background 0.5s ease'
+      background: 'transparent',
     },
     btn: {
       backgroundColor: '#d4af37',
       color: '#0a0e12',
       border: '1px solid #d4af37',
-      padding: '16px 36px',
-      fontSize: '13px',
+      padding: '14px 30px',
+      fontSize: '12px',
       fontWeight: 'bold',
       letterSpacing: '3px',
       textTransform: 'uppercase',
       cursor: 'pointer',
       borderRadius: '2px',
-      opacity: hovered ? '1' : '0',
-      transform: hovered ? 'translateY(0)' : 'translateY(30px)',
-      transition: 'all 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+      // VISIBILITY UPDATE: Visible by default, becomes more prominent on hover
+      opacity: hovered ? '1' : '0.85',
+      transform: hovered ? 'scale(1.05)' : 'scale(1)', 
+      transition: 'all 0.4s cubic-bezier(0.19, 1, 0.22, 1)',
       boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
     }
   };
@@ -141,7 +141,6 @@ const ServiceExample = () => {
       <div style={styles.mainContainer}>
         
         <div style={styles.textSide}>
-          {/* Subtle gold glow behind the text */}
           <div style={{
             position: 'absolute',
             top: '20%',

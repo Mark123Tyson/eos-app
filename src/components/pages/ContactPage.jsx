@@ -37,33 +37,33 @@ const ContactPage = () => {
   const styles = {
     wrapper: {
       backgroundColor: '#050811',
-      minHeight: '100vh',
+      // FIX: Changed minHeight to auto and tightened top padding
+      minHeight: 'auto',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: isMobile ? '80px 15px' : '100px 0',
+      padding: isMobile ? '40px 15px 60px 15px' : '60px 0 100px 0', 
       backgroundImage: `radial-gradient(circle, rgba(200, 200, 200, 0.05) 0.5px, transparent 0.5px)`,
       backgroundSize: '50px 50px',
+      margin: 0,
     },
     mainSectionPanel: {
       width: isMobile ? '100%' : '85%',
       maxWidth: '1200px',
       backgroundColor: 'rgba(13, 18, 24, 0.8)',
       backdropFilter: 'blur(15px)',
-      // SOFTENED EDGES
       borderRadius: '20px', 
       border: '1px solid rgba(212, 175, 55, 0.2)',
       boxShadow: '0 40px 80px rgba(0,0,0,0.8)',
-      padding: isMobile ? '40px 20px' : '70px',
+      padding: isMobile ? '35px 20px' : '60px', // Tightened internal padding
       position: 'relative',
       overflow: 'hidden',
-      // LIVELY ANIMATION
       animation: 'floatPanel 6s ease-in-out infinite'
     },
     container: {
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
-      gap: isMobile ? '40px' : '80px',
+      gap: isMobile ? '30px' : '60px',
       alignItems: 'center',
     },
     infoSide: {
@@ -75,12 +75,12 @@ const ContactPage = () => {
       textTransform: 'uppercase',
       letterSpacing: '5px',
       fontSize: '11px',
-      fontWeight: 'bold',
+      fontWeight: '900', // Boosted weight
       marginBottom: '15px',
       display: 'block'
     },
     heading: {
-      fontSize: isMobile ? '38px' : '56px',
+      fontSize: isMobile ? '34px' : '52px',
       fontWeight: '900',
       color: '#fff',
       lineHeight: '1.1',
@@ -89,7 +89,8 @@ const ContactPage = () => {
     },
     description: {
       fontSize: '16px',
-      color: '#94a3b8',
+      // CONTRAST BOOST: Brightened from #94a3b8 to #e2e8f0
+      color: '#e2e8f0', 
       lineHeight: '1.8',
       maxWidth: '400px',
       marginBottom: '35px',
@@ -98,8 +99,7 @@ const ContactPage = () => {
       flex: '1.2',
       width: '100%',
       backgroundColor: 'rgba(10, 14, 18, 0.6)',
-      padding: isMobile ? '30px 20px' : '45px',
-      // SOFTENED EDGES
+      padding: isMobile ? '25px 20px' : '40px',
       borderRadius: '16px', 
       border: '1px solid rgba(255, 255, 255, 0.05)',
       boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
@@ -107,23 +107,21 @@ const ContactPage = () => {
     input: (isFocused) => ({
       width: '100%',
       backgroundColor: '#050811',
-      border: isFocused ? '1px solid #d4af37' : '1px solid #1e293b',
+      border: isFocused ? '1px solid #d4af37' : '1px solid #334155', // Darkened default border for contrast
       padding: '16px',
-      marginBottom: '20px',
+      marginBottom: '18px',
       color: 'white',
-      // SOFTENED EDGES
       borderRadius: '12px', 
       fontSize: '15px',
       boxSizing: 'border-box',
       outline: 'none',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      // LIVELY FOCUS GLOW
       boxShadow: isFocused ? '0 0 20px rgba(212, 175, 55, 0.15)' : 'none',
       transform: isFocused ? 'translateY(-2px)' : 'translateY(0)'
     }),
     socialLink: {
-      color: '#64748b',
-      fontSize: '22px',
+      color: '#94a3b8', // Brightened base color
+      fontSize: '24px',
       transition: 'all 0.3s ease',
       textDecoration: 'none'
     }
@@ -131,7 +129,6 @@ const ContactPage = () => {
 
   return (
     <div id="contact" style={styles.wrapper}>
-      {/* CSS For the Lively Floating Effect */}
       <style>
         {`
           @keyframes floatPanel {
@@ -152,13 +149,13 @@ const ContactPage = () => {
         <div style={styles.container}>
           <div style={styles.infoSide}>
             <span style={styles.label}>Connect With Us</span>
-            <h1 style={styles.heading}>Your Vision <br/><span style={{color: '#d4af37'}}>Realized</span></h1>
+            <h2 style={styles.heading}>Your Vision <br/><span style={{color: '#d4af37'}}>Realized</span></h2>
             <p style={styles.description}>
               From the heart of Kampala to the streets of Copenhagen, 
-              we are ready to capture your story.
+              we are ready to capture your story. Reach out and let's create something limitless.
             </p>
             
-            <div style={{ display: 'flex', gap: '20px', justifyContent: isMobile ? 'center' : 'flex-start' }}>
+            <div style={{ display: 'flex', gap: '25px', justifyContent: isMobile ? 'center' : 'flex-start' }}>
               {socialPlatforms.map((platform, idx) => (
                 <a 
                   key={idx} 
@@ -171,7 +168,7 @@ const ContactPage = () => {
                     e.currentTarget.style.transform = 'translateY(-5px) scale(1.1)'; 
                   }}
                   onMouseLeave={(e) => { 
-                    e.currentTarget.style.color = '#64748b';
+                    e.currentTarget.style.color = '#94a3b8';
                     e.currentTarget.style.transform = 'translateY(0) scale(1)'; 
                   }}
                 >
@@ -213,7 +210,7 @@ const ContactPage = () => {
                 required
                 style={{
                   ...styles.input(activeField === 'message'),
-                  height: '150px',
+                  height: '120px',
                   resize: 'none'
                 }}
                 onFocus={() => setActiveField('message')}
@@ -235,7 +232,7 @@ const ContactPage = () => {
                   letterSpacing: '3px',
                   fontSize: '12px',
                   cursor: 'pointer',
-                  borderRadius: '12px', // Softened button
+                  borderRadius: '12px',
                   transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                   transform: btnHovered ? 'scale(1.02)' : 'scale(1)',
                   boxShadow: btnHovered ? '0 10px 20px rgba(212, 175, 55, 0.3)' : 'none'

@@ -15,31 +15,36 @@ const Footer = () => {
     footer: {
       backgroundColor: '#0a0e12',
       color: 'white',
-      padding: '60px 20px 30px 20px',
-      textAlign: 'center',
+      padding: '40px 5%',
       borderTop: '1px solid rgba(212, 175, 55, 0.3)',
-      position: 'relative',
       width: '100%',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+    },
+    rowContainer: {
+      display: 'flex',
+      flexDirection: 'column', 
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '30px',
     },
     heading: {
       color: '#d4af37',
-      marginBottom: '25px',
+      margin: 0,
       letterSpacing: '3px',
       textTransform: 'uppercase',
       fontWeight: '900',
       lineHeight: '1.2'
     },
     locationItem: {
-      margin: '12px 0',
+      margin: '8px 0',
       display: 'block',
       color: '#cbd5e1',
+      textDecoration: 'none',
+      fontSize: '14px',
       transition: 'all 0.3s ease',
-      cursor: 'default',
     },
     linkButton: {
       display: 'inline-block',
-      marginTop: '10px',
       backgroundColor: 'transparent',
       color: '#d4af37',
       borderRadius: '4px',
@@ -49,93 +54,128 @@ const Footer = () => {
       textTransform: 'uppercase',
       letterSpacing: '2px',
       transition: 'all 0.3s ease',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      textAlign: 'center'
+    },
+    bottomBar: {
+      marginTop: '40px',
+      paddingTop: '20px',
+      borderTop: '1px solid rgba(255,255,255,0.05)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center', // Always centered
+      justifyContent: 'center',
+      gap: '12px',
+      textAlign: 'center'
     },
     copyright: {
-      marginTop: '40px',
-      fontSize: '13px',
+      fontSize: '11px',
       color: '#64748b',
       letterSpacing: '1px',
-      marginBottom: '8px'
+      margin: 0,
+      textTransform: 'uppercase'
     },
     devLink: {
-      fontSize: '12px',
-      color: '#475569',
+      fontSize: '11px',
+      color: '#94a3b8',
       textDecoration: 'none',
+      letterSpacing: '1px',
+      textTransform: 'uppercase',
+      display: 'inline-block'
+    },
+    devName: {
+      color: '#d4af37',
+      fontWeight: 'bold',
+      marginLeft: '5px',
       transition: 'all 0.3s ease',
-      display: 'inline-block',
-      letterSpacing: '0.5px'
+      display: 'inline-block'
     }
-  };
-
-  const handleMouseEnter = (e, color, bg = 'transparent') => {
-    e.target.style.color = color;
-    e.target.style.transform = 'scale(1.05)';
-    if (bg !== 'none') e.target.style.backgroundColor = bg;
-  };
-
-  const handleMouseLeave = (e, color, bg = 'transparent') => {
-    e.target.style.color = color;
-    e.target.style.transform = 'scale(1)';
-    if (bg !== 'none') e.target.style.backgroundColor = bg;
   };
 
   return (
     <footer style={styles.footer}>
-      {/* Adding Media Queries via a Style Tag */}
       <style>
         {`
-          /* Mobile Devices (Phones) */
-          .footer-heading { font-size: 24px; }
-          .footer-location { font-size: 14px; }
-          .footer-btn { padding: 12px 30px; font-size: 14px; width: 80%; max-width: 300px; }
-
-          /* Tablet & Desktop */
+          /* Top row: Column on Mobile, Row on Desktop */
           @media (min-width: 768px) {
-            .footer-heading { font-size: 32px; }
-            .footer-location { font-size: 16px; }
-            .footer-btn { padding: 14px 40px; font-size: 16px; width: auto; }
+            .footer-row { 
+              flex-direction: row !important; 
+              text-align: left;
+            }
+            .footer-heading { font-size: 28px; }
           }
 
-          /* Large Desktop Screens */
-          @media (min-width: 1200px) {
-            .footer-heading { font-size: 40px; }
+          @media (max-width: 767px) {
+            .footer-row { text-align: center; }
+          }
+
+          .location-link:hover {
+            color: #d4af37 !important;
+            transform: scale(1.02);
+          }
+
+          .dev-name-span:hover {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
           }
         `}
       </style>
 
-      <h2 className="footer-heading" style={styles.heading}>Book Us Now</h2>
-      
-      <div style={{ marginBottom: '30px' }}>
-        <span className="footer-location" style={styles.locationItem}>📍 Uganda, Kampala, Kisaasi</span>
-        <span className="footer-location" style={styles.locationItem}>📍 Valby, Copenhagen, Denmark</span>
+      {/* Main Footer Row */}
+      <div className="footer-row" style={styles.rowContainer}>
+        <div>
+          <h2 className="footer-heading" style={styles.heading}>Book Us Now</h2>
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Kisaasi+Kampala+Uganda" 
+            target="_blank" rel="noopener noreferrer"
+            className="location-link" style={styles.locationItem}
+          >
+            📍 Kisaasi, Kampala, Uganda
+          </a>
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Valby+Copenhagen+Denmark" 
+            target="_blank" rel="noopener noreferrer"
+            className="location-link" style={styles.locationItem}
+          >
+            📍 Valby, Copenhagen, Denmark
+          </a>
+        </div>
+
+        <a
+          href="#contact"
+          onClick={scrollToContact}
+          style={{...styles.linkButton, padding: '12px 30px'}}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#d4af37';
+            e.target.style.color = '#0a0e12';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+            e.target.style.color = '#d4af37';
+          }}
+        >
+          Get in Touch
+        </a>
       </div>
 
-      <a
-        href="#contact"
-        onClick={scrollToContact}
-        className="footer-btn"
-        style={styles.linkButton}
-        onMouseEnter={(e) => handleMouseEnter(e, '#0a0e12', '#d4af37')}
-        onMouseLeave={(e) => handleMouseLeave(e, '#d4af37', 'transparent')}
-      >
-        Get in Touch
-      </a>
+      {/* Bottom Bar: Copyright & Developer (Centered for all devices) */}
+      <div style={styles.bottomBar}>
+        <p style={styles.copyright}>
+          © {currentYear} EOS LIMITLESS PICTURES. ALL RIGHTS RESERVED.
+        </p>
 
-      <p style={styles.copyright}>
-        &copy; {currentYear} EOS LIMITLESS PICTURES. ALL RIGHTS RESERVED.
-      </p>
-
-      <a 
-        href="https://marktyson.netlify.app/"
-        target="_blank" 
-        rel="noopener noreferrer"
-        style={styles.devLink}
-        onMouseEnter={(e) => handleMouseEnter(e, '#d4af37', 'none')}
-        onMouseLeave={(e) => handleMouseLeave(e, '#475569', 'none')}
-      >
-        Developed by <span style={{ fontWeight: 'bold' }}>Mark Tyson</span>
-      </a>
+        <a 
+          href="https://marktyson.netlify.app/"
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={styles.devLink}
+        >
+          Built by <span className="dev-name-span" style={styles.devName}>MARK TYSON</span>
+        </a>
+      </div>
     </footer>
   );
 };

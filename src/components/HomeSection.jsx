@@ -21,12 +21,10 @@ const HomeSection = () => {
 
   const styles = {
     section: {
-      // FIX: Use minHeight so it doesn't force extra empty space below content
       minHeight: isMobile ? "auto" : "100vh",
       height: isMobile ? "auto" : "100vh",
-      width: "100vw", // Use viewport width to prevent white side bars
+      width: "100vw", 
       margin: 0,
-      // Increased bottom padding on mobile for a clean transition to next section
       padding: isMobile ? "100px 0 60px 0" : "0", 
       display: "flex",
       flexDirection: "column",
@@ -46,7 +44,6 @@ const HomeSection = () => {
       backgroundImage: `url(${mainImg})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
-      // Fixed attachment often causes "jumps" on mobile browsers
       backgroundAttachment: "scroll", 
       animation: "kenBurns 20s infinite alternate",
       zIndex: 0
@@ -119,11 +116,6 @@ const HomeSection = () => {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
           }
-          @keyframes float {
-            0% { transform: translateY(0px) rotate(45deg); }
-            50% { transform: translateY(10px) rotate(45deg); }
-            100% { transform: translateY(0px) rotate(45deg); }
-          }
           @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -159,33 +151,6 @@ const HomeSection = () => {
             EXPLORE SHOWREEL
           </div>
         </div>
-
-        {/* Hide indicator on mobile so it doesn't create extra vertical space */}
-        {!isMobile && (
-          <div 
-            onClick={scrollToServices}
-            style={{
-              position: "absolute",
-              bottom: "30px",
-              zIndex: 3,
-              cursor: "pointer",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              opacity: 0.8
-            }}
-          >
-            <span style={{ fontSize: '10px', letterSpacing: '3px', marginBottom: '10px' }}>SCROLL</span>
-            <div style={{
-              width: "12px",
-              height: "12px",
-              borderBottom: "2px solid #d4af37",
-              borderRight: "2px solid #d4af37",
-              transform: "rotate(45deg)",
-              animation: "float 2s infinite"
-            }}></div>
-          </div>
-        )}
       </section>
     </>
   );
