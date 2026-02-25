@@ -92,7 +92,6 @@ const ProofGallery = () => {
   const styles = {
     section: { 
       backgroundColor: '#050811', 
-      /* FIXED: Added top padding for small/medium devices to prevent header overlap */
       padding: isSmallOrMedium ? '100px 5% 50px 5%' : '10px 5% 50px 5%', 
       marginTop: '-15px',
       textAlign: 'center', 
@@ -155,7 +154,9 @@ const ProofGallery = () => {
       overflow: 'hidden', 
       borderRadius: '15px', 
       border: '1px solid #1a1a1a', 
-      backgroundColor: '#000',
+      /* FIXED: Background color blends with home section */
+      backgroundColor: '#0a0e1a',
+      backgroundImage: 'radial-gradient(circle at center, #0f172a 0%, #050811 100%)',
       transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)'
     },
     compositeContainer: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(3, 1fr)', height: '100%', width: '100%', gap: '2px' },
@@ -169,7 +170,9 @@ const ProofGallery = () => {
       overflow: 'hidden', 
       boxShadow: '0 0 35px rgba(0,0,0,0.9)',
       transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-      zIndex: 5
+      zIndex: 5,
+      /* FIXED: Ensure portal frame has blend color */
+      backgroundColor: '#050811'
     },
     roundImg: { width: '100%', height: '100%', objectFit: 'cover' },
     overlay: { position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%)', padding: '30px 25px', textAlign: 'left', zIndex: 10 },
@@ -180,6 +183,8 @@ const ProofGallery = () => {
       borderRadius: '12px', 
       overflow: 'hidden', 
       border: '1px solid #1a1a1a',
+      /* FIXED: Added background color for single views */
+      backgroundColor: '#0a0e1a',
       transition: 'transform 0.3s ease'
     },
     singleImg: { width: '100%', height: '100%', objectFit: 'cover' }
