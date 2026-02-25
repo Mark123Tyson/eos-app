@@ -4,16 +4,17 @@ import { FaInstagram, FaWhatsapp, FaFacebook, FaSnapchatGhost, FaTiktok, FaYoutu
 const ContactPage = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [btnHovered, setBtnHovered] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [activeField, setActiveField] = useState(null);
 
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isMobile = screenWidth <= 992;
+  const isSmall = windowWidth < 768;
+  const isMedium = windowWidth >= 768 && windowWidth < 1100;
 
   const socialPlatforms = [
     { Icon: FaInstagram, color: '#E1306C', url: 'https://instagram.com' },
@@ -37,142 +38,130 @@ const ContactPage = () => {
   const styles = {
     wrapper: {
       backgroundColor: '#050811',
-      // FIX: Changed minHeight to auto and tightened top padding
       minHeight: 'auto',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: isMobile ? '40px 15px 60px 15px' : '60px 0 100px 0', 
-      backgroundImage: `radial-gradient(circle, rgba(200, 200, 200, 0.05) 0.5px, transparent 0.5px)`,
-      backgroundSize: '50px 50px',
+      /* FIXED: Added significant top padding for mobile/tablet to avoid header overlap */
+      padding: isSmall ? '100px 15px 50px 15px' : isMedium ? '80px 20px 60px 20px' : '40px 20px 80px 20px', 
+      backgroundImage: `radial-gradient(circle, rgba(212, 175, 55, 0.03) 0.5px, transparent 0.5px)`,
+      backgroundSize: '40px 40px',
       margin: 0,
+      marginTop: '-15px', 
+      position: 'relative',
+      zIndex: 5
     },
     mainSectionPanel: {
-      width: isMobile ? '100%' : '85%',
-      maxWidth: '1200px',
+      width: '100%',
+      maxWidth: (isSmall || isMedium) ? '700px' : '1200px',
       backgroundColor: 'rgba(13, 18, 24, 0.8)',
       backdropFilter: 'blur(15px)',
-      borderRadius: '20px', 
-      border: '1px solid rgba(212, 175, 55, 0.2)',
-      boxShadow: '0 40px 80px rgba(0,0,0,0.8)',
-      padding: isMobile ? '35px 20px' : '60px', // Tightened internal padding
+      WebkitBackdropFilter: 'blur(15px)',
+      borderRadius: '25px', 
+      border: '1px solid rgba(212, 175, 55, 0.15)',
+      boxShadow: '0 40px 80px rgba(0,0,0,0.9)',
+      padding: isSmall ? '40px 20px' : '50px',
       position: 'relative',
       overflow: 'hidden',
-      animation: 'floatPanel 6s ease-in-out infinite'
+      animation: 'subtleFloat 5s ease-in-out infinite'
     },
     container: {
       display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      gap: isMobile ? '30px' : '60px',
+      flexDirection: (isSmall || isMedium) ? 'column' : 'row',
+      gap: (isSmall || isMedium) ? '35px' : '60px',
       alignItems: 'center',
     },
     infoSide: {
       flex: '1',
-      textAlign: isMobile ? 'center' : 'left',
+      textAlign: (isSmall || isMedium) ? 'center' : 'left',
+      width: '100%'
     },
     label: {
       color: '#d4af37',
       textTransform: 'uppercase',
-      letterSpacing: '5px',
-      fontSize: '11px',
-      fontWeight: '900', // Boosted weight
+      letterSpacing: '4px',
+      /* INCREASED: Small text label size */
+      fontSize: '13px',
+      fontWeight: '900',
       marginBottom: '15px',
       display: 'block'
     },
     heading: {
-      fontSize: isMobile ? '34px' : '52px',
+      fontSize: isSmall ? '34px' : isMedium ? '44px' : '54px',
       fontWeight: '900',
       color: '#fff',
       lineHeight: '1.1',
-      marginBottom: '20px',
+      marginBottom: '15px',
       textTransform: 'uppercase',
     },
     description: {
-      fontSize: '16px',
-      // CONTRAST BOOST: Brightened from #94a3b8 to #e2e8f0
-      color: '#e2e8f0', 
-      lineHeight: '1.8',
-      maxWidth: '400px',
+      /* INCREASED: Small text description size */
+      fontSize: '17px',
+      color: '#cbd5e1', 
+      lineHeight: '1.6',
+      maxWidth: (isSmall || isMedium) ? '100%' : '450px',
       marginBottom: '35px',
     },
     formCard: {
       flex: '1.2',
       width: '100%',
-      backgroundColor: 'rgba(10, 14, 18, 0.6)',
-      padding: isMobile ? '25px 20px' : '40px',
+      backgroundColor: 'rgba(10, 14, 18, 0.5)',
+      padding: isSmall ? '25px' : '35px',
       borderRadius: '16px', 
       border: '1px solid rgba(255, 255, 255, 0.05)',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
     },
     input: (isFocused) => ({
       width: '100%',
-      backgroundColor: '#050811',
-      border: isFocused ? '1px solid #d4af37' : '1px solid #334155', // Darkened default border for contrast
-      padding: '16px',
-      marginBottom: '18px',
+      backgroundColor: '#02040a',
+      border: isFocused ? '1px solid #d4af37' : '1px solid #1e293b',
+      padding: '16px 20px',
+      marginBottom: '15px',
       color: 'white',
-      borderRadius: '12px', 
-      fontSize: '15px',
+      borderRadius: '10px', 
+      /* INCREASED: Input text size */
+      fontSize: '16px',
       boxSizing: 'border-box',
       outline: 'none',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      boxShadow: isFocused ? '0 0 20px rgba(212, 175, 55, 0.15)' : 'none',
-      transform: isFocused ? 'translateY(-2px)' : 'translateY(0)'
+      transition: '0.3s ease',
+      transform: isFocused ? 'scale(1.01)' : 'scale(1)'
     }),
     socialLink: {
-      color: '#94a3b8', // Brightened base color
+      color: '#64748b',
       fontSize: '24px',
-      transition: 'all 0.3s ease',
-      textDecoration: 'none'
+      transition: '0.3s ease',
+      display: 'inline-block'
     }
   };
 
   return (
-    <div id="contact" style={styles.wrapper}>
+    <section id="contact" style={styles.wrapper}>
       <style>
         {`
-          @keyframes floatPanel {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+          @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
           }
         `}
       </style>
 
       <div style={styles.mainSectionPanel}>
-        <div style={{
-          position: 'absolute', top: '-100px', right: '-100px', width: '300px', height: '300px',
-          background: 'radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-
         <div style={styles.container}>
           <div style={styles.infoSide}>
             <span style={styles.label}>Connect With Us</span>
             <h2 style={styles.heading}>Your Vision <br/><span style={{color: '#d4af37'}}>Realized</span></h2>
             <p style={styles.description}>
-              From the heart of Kampala to the streets of Copenhagen, 
-              we are ready to capture your story. Reach out and let's create something limitless.
+              From Kampala to Copenhagen, we capture stories that matter. Reach out and let's create something limitless.
             </p>
             
-            <div style={{ display: 'flex', gap: '25px', justifyContent: isMobile ? 'center' : 'flex-start' }}>
-              {socialPlatforms.map((platform, idx) => (
+            <div style={{ display: 'flex', gap: '25px', justifyContent: (isSmall || isMedium) ? 'center' : 'flex-start' }}>
+              {socialPlatforms.map((p, idx) => (
                 <a 
-                  key={idx} 
-                  href={platform.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                  key={idx} href={p.url} target="_blank" rel="noopener noreferrer" 
                   style={styles.socialLink}
-                  onMouseEnter={(e) => { 
-                    e.currentTarget.style.color = platform.color;
-                    e.currentTarget.style.transform = 'translateY(-5px) scale(1.1)'; 
-                  }}
-                  onMouseLeave={(e) => { 
-                    e.currentTarget.style.color = '#94a3b8';
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)'; 
-                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = p.color; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; e.currentTarget.style.transform = 'translateY(0)'; }}
                 >
-                  <platform.Icon />
+                  <p.Icon />
                 </a>
               ))}
             </div>
@@ -181,64 +170,35 @@ const ContactPage = () => {
           <div style={styles.formCard}>
             <form onSubmit={handleSubmit}>
               <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                required
+                type="text" name="name" placeholder="Name" required
                 style={styles.input(activeField === 'name')}
-                onFocus={() => setActiveField('name')}
-                onBlur={() => setActiveField(null)}
-                value={formData.name}
-                onChange={handleChange}
+                onFocus={() => setActiveField('name')} onBlur={() => setActiveField(null)}
+                value={formData.name} onChange={handleChange}
               />
-
               <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
+                type="email" name="email" placeholder="Email" required
                 style={styles.input(activeField === 'email')}
-                onFocus={() => setActiveField('email')}
-                onBlur={() => setActiveField(null)}
-                value={formData.email}
-                onChange={handleChange}
+                onFocus={() => setActiveField('email')} onBlur={() => setActiveField(null)}
+                value={formData.email} onChange={handleChange}
               />
-
               <textarea
-                name="message"
-                placeholder="How can we help?"
-                required
-                style={{
-                  ...styles.input(activeField === 'message'),
-                  height: '120px',
-                  resize: 'none'
-                }}
-                onFocus={() => setActiveField('message')}
-                onBlur={() => setActiveField(null)}
-                value={formData.message}
-                onChange={handleChange}
+                name="message" placeholder="Project details..." required
+                style={{ ...styles.input(activeField === 'message'), height: '130px', resize: 'none' }}
+                onFocus={() => setActiveField('message')} onBlur={() => setActiveField(null)}
+                value={formData.message} onChange={handleChange}
               />
-
               <button
                 type="submit"
+                onMouseEnter={() => setBtnHovered(true)} onMouseLeave={() => setBtnHovered(false)}
                 style={{
-                  width: '100%',
-                  padding: '18px',
+                  width: '100%', padding: '18px',
                   backgroundColor: btnHovered ? '#fff' : '#d4af37',
-                  color: '#0a0e12',
-                  border: 'none',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  letterSpacing: '3px',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  borderRadius: '12px',
-                  transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transform: btnHovered ? 'scale(1.02)' : 'scale(1)',
-                  boxShadow: btnHovered ? '0 10px 20px rgba(212, 175, 55, 0.3)' : 'none'
+                  color: '#0a0e12', border: 'none', fontWeight: '900',
+                  textTransform: 'uppercase', letterSpacing: '2.5px', 
+                  /* INCREASED: Button text size */
+                  fontSize: '13px',
+                  cursor: 'pointer', borderRadius: '10px', transition: '0.3s ease'
                 }}
-                onMouseEnter={() => setBtnHovered(true)}
-                onMouseLeave={() => setBtnHovered(false)}
               >
                 Send Inquiry
               </button>
@@ -246,7 +206,7 @@ const ContactPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

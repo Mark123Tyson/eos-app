@@ -13,73 +13,81 @@ const Footer = () => {
 
   const styles = {
     footer: {
-      backgroundColor: '#0a0e12',
+      backgroundColor: '#050811',
       color: 'white',
-      padding: '40px 5%',
-      borderTop: '1px solid rgba(212, 175, 55, 0.3)',
+      padding: '40px 5% 50px 5%', // Slightly increased padding
+      borderTop: '1px solid rgba(212, 175, 55, 0.1)',
       width: '100%',
       boxSizing: 'border-box',
+      marginTop: '-5px',
+      position: 'relative',
+      zIndex: 5
     },
     rowContainer: {
       display: 'flex',
       flexDirection: 'column', 
       alignItems: 'center',
       justifyContent: 'space-between',
-      gap: '30px',
+      gap: '30px', // Increased gap
     },
     heading: {
       color: '#d4af37',
       margin: 0,
-      letterSpacing: '3px',
+      letterSpacing: '4px',
       textTransform: 'uppercase',
       fontWeight: '900',
-      lineHeight: '1.2'
+      lineHeight: '1.2',
+      fontSize: '28px' // Increased from 22px
     },
     locationItem: {
       margin: '8px 0',
       display: 'block',
-      color: '#cbd5e1',
+      color: '#cbd5e1', // Lighter color for better readability
       textDecoration: 'none',
-      fontSize: '14px',
+      fontSize: '15px', // Increased from 13px
       transition: 'all 0.3s ease',
+      letterSpacing: '0.8px',
+      fontWeight: '500'
     },
     linkButton: {
       display: 'inline-block',
       backgroundColor: 'transparent',
       color: '#d4af37',
-      borderRadius: '4px',
+      borderRadius: '6px',
       border: '2px solid #d4af37',
       textDecoration: 'none',
-      fontWeight: 'bold',
+      fontWeight: '800',
       textTransform: 'uppercase',
-      letterSpacing: '2px',
+      letterSpacing: '2.5px',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
-      textAlign: 'center'
+      textAlign: 'center',
+      fontSize: '13px' // Increased from 11px
     },
     bottomBar: {
       marginTop: '40px',
-      paddingTop: '20px',
+      paddingTop: '25px',
       borderTop: '1px solid rgba(255,255,255,0.05)',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center', // Always centered
+      alignItems: 'center',
       justifyContent: 'center',
       gap: '12px',
       textAlign: 'center'
     },
     copyright: {
-      fontSize: '11px',
+      fontSize: '12px', // Increased from 10px
       color: '#64748b',
-      letterSpacing: '1px',
+      letterSpacing: '1.5px',
       margin: 0,
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      fontWeight: '600'
     },
     devLink: {
-      fontSize: '11px',
+      fontSize: '12px', // Increased from 10px
       color: '#94a3b8',
       textDecoration: 'none',
-      letterSpacing: '1px',
+      letterSpacing: '1.5px',
       textTransform: 'uppercase',
       display: 'inline-block'
     },
@@ -88,7 +96,8 @@ const Footer = () => {
       fontWeight: 'bold',
       marginLeft: '5px',
       transition: 'all 0.3s ease',
-      display: 'inline-block'
+      display: 'inline-block',
+      opacity: 0.9
     }
   };
 
@@ -96,13 +105,12 @@ const Footer = () => {
     <footer style={styles.footer}>
       <style>
         {`
-          /* Top row: Column on Mobile, Row on Desktop */
           @media (min-width: 768px) {
             .footer-row { 
               flex-direction: row !important; 
               text-align: left;
             }
-            .footer-heading { font-size: 28px; }
+            .footer-heading { font-size: 32px !important; }
           }
 
           @media (max-width: 767px) {
@@ -111,12 +119,13 @@ const Footer = () => {
 
           .location-link:hover {
             color: #d4af37 !important;
-            transform: scale(1.02);
+            transform: translateY(-2px);
           }
 
           .dev-name-span:hover {
+            color: #fff !important;
+            opacity: 1 !important;
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            letter-spacing: 2px;
           }
         `}
       </style>
@@ -150,18 +159,20 @@ const Footer = () => {
           style={{...styles.linkButton, padding: '12px 30px'}}
           onMouseEnter={(e) => {
             e.target.style.backgroundColor = '#d4af37';
-            e.target.style.color = '#0a0e12';
+            e.target.style.color = '#050811';
+            e.target.style.transform = 'scale(1.05)';
           }}
           onMouseLeave={(e) => {
             e.target.style.backgroundColor = 'transparent';
             e.target.style.color = '#d4af37';
+            e.target.style.transform = 'scale(1)';
           }}
         >
           Get in Touch
         </a>
       </div>
 
-      {/* Bottom Bar: Copyright & Developer (Centered for all devices) */}
+      {/* Bottom Bar: Copyright & Developer */}
       <div style={styles.bottomBar}>
         <p style={styles.copyright}>
           © {currentYear} EOS LIMITLESS PICTURES. ALL RIGHTS RESERVED.

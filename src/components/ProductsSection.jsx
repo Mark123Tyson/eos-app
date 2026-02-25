@@ -12,7 +12,7 @@ const products = [
   { title: 'Documentary', img: documentaryImg, desc: 'Cinematic storytelling designed to showcase real-life events and powerful narratives.' },
   { title: 'Abstract', img: abstractImg, desc: 'Creative and artistic compositions for modern and abstract visuals and branding.' },
   { title: 'Videography', img: horse, desc: 'Cinematic storytelling, commercials, documentaries, and high-end event coverage.' },
-  { title: 'Post Production', img: product, desc: 'Expert editing, color grading, sound design, and visual enhancement for all media.' }
+  { title: 'Post-Production', img: product, desc: 'Expert editing, color grading, sound design, and visual enhancement for all media.' }
 ];
 
 const ProductsSection = () => {
@@ -31,129 +31,127 @@ const ProductsSection = () => {
   const styles = {
     section: {
       position: 'relative',
-      padding: isMobile ? '80px 20px' : '120px 40px',
-      /* MOONLIT NIGHT SKY EFFECT: 
-         Deeper background, more subtle stars (less bright gold, more white/silver).
-      */
-      backgroundColor: '#050811', // Very dark blue/black base
+      /* FIXED: Significant top padding for Mobile/Tablet to clear the fixed header */
+      padding: isMobile ? '100px 20px 40px 20px' : isTablet ? '90px 30px 50px 30px' : '30px 40px 50px 40px',
+      backgroundColor: '#050811',
       backgroundImage: `
-        radial-gradient(circle, rgba(200, 200, 200, 0.5) 0.5px, transparent 0.5px), /* Faint silver stars */
-        radial-gradient(circle, rgba(212, 175, 55, 0.3) 0.5px, transparent 0.5px)  /* Very subtle golden specks */
+        radial-gradient(circle, rgba(200, 200, 200, 0.4) 0.5px, transparent 0.5px),
+        radial-gradient(circle, rgba(212, 175, 55, 0.2) 0.5px, transparent 0.5px)
       `,
-      backgroundSize: '30px 30px, 50px 50px', // Smaller, denser pattern
-      backgroundPosition: '0 0, 15px 25px',
+      backgroundSize: '40px 40px, 60px 60px',
       color: 'white',
       textAlign: 'center',
       width: '100%',
       boxSizing: 'border-box',
-      overflow: 'hidden'
+      marginTop: '-15px', 
+      zIndex: 5
     },
-    // Subtle moon glow, less intense than previous gold glow
-    overlayGlow: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'radial-gradient(circle at center, rgba(100, 150, 200, 0.03) 0%, transparent 70%)', // Soft blueish glow
-      pointerEvents: 'none',
-      zIndex: 0
+    heading: { 
+      fontSize: isMobile ? '36px' : '48px', // Increased
+      letterSpacing: '5px', 
+      textTransform: 'uppercase', 
+      fontWeight: '900', 
+      margin: '0 0 10px 0' 
     },
-    heading: {
-      position: 'relative',
-      zIndex: 2,
-      fontSize: isMobile ? '36px' : '52px',
-      letterSpacing: '4px',
-      textTransform: 'uppercase',
-      fontWeight: '900',
-      margin: '0 0 15px 0',
-      textShadow: '0 4px 10px rgba(0,0,0,0.8)'
-    },
-    line: {
-      position: 'relative',
-      zIndex: 2,
-      width: '100px',
-      height: '5px',
-      backgroundColor: '#d4af37',
-      margin: '0 auto 60px auto',
-      boxShadow: '0 0 15px rgba(212, 175, 55, 0.5)'
+    line: { 
+      width: '70px', 
+      height: '4px', 
+      backgroundColor: '#d4af37', 
+      margin: '0 auto 40px auto' 
     },
     cardsContainer: {
-      position: 'relative',
-      zIndex: 2,
       display: 'grid',
       gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1fr 1fr' : '1fr 1fr 1fr',
-      gap: '40px',
+      gap: '25px', 
       maxWidth: '1400px',
       margin: '0 auto'
     },
     card: {
       position: 'relative',
-      borderRadius: '12px',
+      height: '480px', 
+      borderRadius: '20px',
       overflow: 'hidden',
-      height: isMobile ? '400px' : '500px',
+      backgroundColor: '#050811',
+      border: '1px solid rgba(255,255,255,0.12)',
+      cursor: 'pointer',
+      transition: 'all 0.5s ease',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'flex-end',
-      cursor: 'pointer',
-      transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
-      border: '1px solid rgba(255,255,255,0.1)'
+      padding: '30px 25px'
     },
-    imageWrapper: {
+    baseImage: {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: '100%',
-      height: '100%',
-      zIndex: 1
-    },
-    image: {
       width: '100%',
       height: '100%',
       objectFit: 'cover',
-      transition: 'transform 0.8s ease'
+      zIndex: 1,
+      opacity: 0.3,
+      filter: 'grayscale(50%) blur(1px)', 
+      transition: '0.6s ease'
     },
-    cardOverlay: {
+    lensImage: {
       position: 'absolute',
       top: 0,
       left: 0,
       width: '100%',
       height: '100%',
-      background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,1) 100%)',
-      zIndex: 2
+      objectFit: 'cover',
+      zIndex: 2,
+      clipPath: 'circle(35% at 50% 38%)', 
+      transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)'
     },
-    content: {
-      position: 'relative',
+    outerRing: {
+      position: 'absolute',
+      top: '38%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '78%', 
+      paddingBottom: '78%', 
+      borderRadius: '50%',
+      border: '1px solid rgba(212, 175, 55, 0.2)',
+      zIndex: 2,
+      pointerEvents: 'none'
+    },
+    innerRing: {
+      position: 'absolute',
+      top: '38%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '68%', 
+      paddingBottom: '68%', 
+      borderRadius: '50%',
+      border: '2px solid #d4af37',
+      boxShadow: '0 0 20px rgba(212, 175, 55, 0.2)',
       zIndex: 3,
-      padding: '35px',
-      textAlign: 'left',
-      width: '100%',
-      boxSizing: 'border-box'
+      pointerEvents: 'none',
+      transition: 'all 0.5s ease'
     },
+    textContainer: { position: 'relative', zIndex: 4, textAlign: 'center' },
     title: {
-      fontSize: '28px',
-      fontWeight: '800',
+      fontSize: '26px', // Increased from 24px
+      fontWeight: '900',
       color: '#d4af37',
-      marginBottom: '12px',
       textTransform: 'uppercase',
-      textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+      letterSpacing: '2px',
+      marginBottom: '10px',
+      textShadow: '0 2px 10px rgba(0,0,0,1)'
     },
     desc: {
-      fontSize: '17px',
+      fontSize: '18px', // Increased from 17px
+      fontWeight: '500', 
       color: '#ffffff',
-      margin: 0,
-      opacity: isMobile ? 1 : (hovered !== null ? 1 : 0),
-      transform: isMobile ? 'none' : (hovered !== null ? 'translateY(0)' : 'translateY(20px)'),
-      transition: 'all 0.4s ease'
+      lineHeight: '1.5',
+      opacity: 0.95,
+      margin: 0
     }
   };
 
   return (
     <section id="services" style={styles.section}>
-      <div style={styles.overlayGlow}></div>
-      
-      <h2 style={styles.heading}>Our Services</h2>
+      <h2 style={styles.heading}>Professional Services</h2>
       <div style={styles.line}></div>
       
       <div style={styles.cardsContainer}>
@@ -162,33 +160,44 @@ const ProductsSection = () => {
             key={idx}
             style={{
               ...styles.card,
-              transform: hovered === idx ? 'scale(1.03)' : 'scale(1)',
-              borderColor: hovered === idx ? '#d4af37' : 'rgba(255,255,255,0.1)'
+              borderColor: hovered === idx ? '#d4af37' : 'rgba(255,255,255,0.12)',
+              transform: hovered === idx ? 'translateY(-8px)' : 'none',
+              boxShadow: hovered === idx ? '0 15px 30px rgba(0,0,0,0.8)' : 'none'
             }}
             onMouseEnter={() => setHovered(idx)}
             onMouseLeave={() => setHovered(null)}
           >
-            <div style={styles.imageWrapper}>
-              <img 
-                src={p.img} 
-                alt={p.title} 
-                style={{
-                  ...styles.image,
-                  transform: hovered === idx ? 'scale(1.1)' : 'scale(1)',
-                  filter: hovered === idx ? 'brightness(1.1)' : 'brightness(0.8)'
-                }} 
-              />
-              <div style={styles.cardOverlay}></div>
-            </div>
-            <div style={styles.content}>
+            <img 
+              src={p.img} 
+              alt="bg" 
+              style={{
+                ...styles.baseImage,
+                opacity: hovered === idx ? 0.45 : 0.25,
+                filter: hovered === idx ? 'grayscale(0%) blur(0px)' : 'grayscale(50%) blur(1px)'
+              }} 
+            />
+
+            <div style={styles.outerRing}></div>
+            <div style={{
+              ...styles.innerRing,
+              transform: hovered === idx ? 'translate(-50%, -50%) scale(1.03)' : 'translate(-50%, -50%) scale(1)',
+              borderColor: hovered === idx ? '#d4af37' : 'rgba(212, 175, 55, 0.6)'
+            }}></div>
+
+            <img 
+              src={p.img} 
+              alt={p.title} 
+              style={{
+                ...styles.lensImage,
+                transform: hovered === idx ? 'scale(1.12)' : 'scale(1.02)', 
+                clipPath: hovered === idx ? 'circle(38% at 50% 38%)' : 'circle(35% at 50% 38%)',
+                filter: hovered === idx ? 'brightness(1.1)' : 'brightness(0.85)'
+              }} 
+            />
+
+            <div style={styles.textContainer}>
               <h3 style={styles.title}>{p.title}</h3>
-              <p style={{
-                ...styles.desc,
-                opacity: isMobile || hovered === idx ? 1 : 0,
-                transform: isMobile || hovered === idx ? 'translateY(0)' : 'translateY(20px)'
-              }}>
-                {p.desc}
-              </p>
+              <p style={styles.desc}>{p.desc}</p>
             </div>
           </div>
         ))}
