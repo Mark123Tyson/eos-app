@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FaInstagram, FaWhatsapp, FaFacebook, FaSnapchatGhost, FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaInstagram, FaWhatsapp, FaFacebook, FaSnapchatGhost, FaTiktok, FaYoutube, FaCheckCircle } from 'react-icons/fa';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [btnHovered, setBtnHovered] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [activeField, setActiveField] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  /* Added state for the popup visibility */
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -29,10 +32,32 @@ const ContactPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Thank you, ${formData.name}. We will reach out shortly!`);
-    setFormData({ name: '', email: '', message: '' });
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+
+    const formDataObj = new FormData(event.target);
+    formDataObj.append("access_key", "31159a2b-c757-4bb0-ba84-5486b9e86b11");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formDataObj
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setShowPopup(true); // Trigger the popup
+        setFormData({ name: '', email: '', message: '' }); 
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const styles = {
@@ -130,11 +155,55 @@ const ContactPage = () => {
       fontSize: '26px',
       transition: '0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
       display: 'inline-block'
+    },
+    /* POPUP STYLES */
+    modalOverlay: {
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(5, 8, 17, 0.95)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      backdropFilter: 'blur(10px)'
+    },
+    modalContent: {
+      backgroundColor: '#0a0e1a',
+      padding: '50px 40px',
+      borderRadius: '24px',
+      border: '1px solid #d4af37',
+      textAlign: 'center',
+      maxWidth: '400px',
+      width: '90%',
+      boxShadow: '0 20px 50px rgba(0,0,0,1)'
     }
   };
 
   return (
     <section id="contact" style={styles.wrapper}>
+      {/* POPUP SCREEN */}
+      {showPopup && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalContent}>
+            <FaCheckCircle style={{ fontSize: '60px', color: '#d4af37', marginBottom: '20px' }} />
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '36px', color: '#fff', letterSpacing: '2px', marginBottom: '10px' }}>SUCCESS!</h2>
+            <p style={{ color: '#94a3b8', fontSize: '15px', marginBottom: '30px', lineHeight: '1.6' }}>
+              Your message has been sent to EOS Limitless. We will reach out shortly.
+            </p>
+            <button 
+              onClick={() => setShowPopup(false)}
+              style={{
+                backgroundColor: '#d4af37', color: '#0a0e12', padding: '12px 30px', borderRadius: '8px', 
+                border: 'none', fontFamily: "'Syncopate', sans-serif", fontWeight: '700', fontSize: '10px', 
+                letterSpacing: '2px', cursor: 'pointer'
+              }}
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      )}
+
       <div style={styles.mainSectionPanel}>
         <div style={styles.container}>
           <div style={styles.infoSide}>
@@ -159,7 +228,7 @@ const ContactPage = () => {
           </div>
 
           <div style={styles.formCard}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={onSubmit}>
               <input
                 type="text" name="name" placeholder="Name" required
                 style={styles.input(activeField === 'name')}
@@ -180,20 +249,23 @@ const ContactPage = () => {
               />
               <button
                 type="submit"
+                disabled={isSubmitting}
                 onMouseEnter={() => setBtnHovered(true)} onMouseLeave={() => setBtnHovered(false)}
                 style={{
                   width: '100%', padding: '20px',
-                  backgroundColor: btnHovered ? '#fff' : '#d4af37',
+                  backgroundColor: isSubmitting ? '#1e293b' : (btnHovered ? '#fff' : '#d4af37'),
                   color: '#0a0e12', border: 'none', 
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '700',
                   textTransform: 'uppercase', 
                   letterSpacing: '4px', 
                   fontSize: '11px',
-                  cursor: 'pointer', borderRadius: '12px', transition: 'all 0.4s ease'
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer', 
+                  borderRadius: '12px', transition: 'all 0.4s ease',
+                  opacity: isSubmitting ? 0.7 : 1
                 }}
               >
-                Send Inquiry
+                {isSubmitting ? 'Sending...' : 'Send Inquiry'}
               </button>
             </form>
           </div>
