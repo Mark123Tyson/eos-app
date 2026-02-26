@@ -42,33 +42,31 @@ const ContactPage = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      /* FIXED: Added significant top padding for mobile/tablet to avoid header overlap */
-      padding: isSmall ? '100px 15px 50px 15px' : isMedium ? '80px 20px 60px 20px' : '40px 20px 80px 20px', 
+      padding: isSmall ? '100px 15px 50px 15px' : isMedium ? '80px 20px 60px 20px' : '60px 20px 100px 20px', 
       backgroundImage: `radial-gradient(circle, rgba(212, 175, 55, 0.03) 0.5px, transparent 0.5px)`,
       backgroundSize: '40px 40px',
       margin: 0,
-      marginTop: '-15px', 
       position: 'relative',
-      zIndex: 5
+      zIndex: 5,
+      fontFamily: "'Inter', sans-serif"
     },
     mainSectionPanel: {
       width: '100%',
       maxWidth: (isSmall || isMedium) ? '700px' : '1200px',
-      backgroundColor: 'rgba(13, 18, 24, 0.8)',
+      backgroundColor: 'rgba(13, 18, 24, 0.6)',
       backdropFilter: 'blur(15px)',
       WebkitBackdropFilter: 'blur(15px)',
-      borderRadius: '25px', 
-      border: '1px solid rgba(212, 175, 55, 0.15)',
-      boxShadow: '0 40px 80px rgba(0,0,0,0.9)',
-      padding: isSmall ? '40px 20px' : '50px',
+      borderRadius: '24px', 
+      border: '1px solid rgba(255, 255, 255, 0.05)',
+      boxShadow: '0 40px 80px rgba(0,0,0,0.8)',
+      padding: isSmall ? '40px 20px' : '60px',
       position: 'relative',
       overflow: 'hidden',
-      animation: 'subtleFloat 5s ease-in-out infinite'
     },
     container: {
       display: 'flex',
       flexDirection: (isSmall || isMedium) ? 'column' : 'row',
-      gap: (isSmall || isMedium) ? '35px' : '60px',
+      gap: (isSmall || isMedium) ? '40px' : '80px',
       alignItems: 'center',
     },
     infoSide: {
@@ -77,73 +75,66 @@ const ContactPage = () => {
       width: '100%'
     },
     label: {
+      fontFamily: "'Syncopate', sans-serif",
       color: '#d4af37',
       textTransform: 'uppercase',
-      letterSpacing: '4px',
-      /* INCREASED: Small text label size */
-      fontSize: '13px',
-      fontWeight: '900',
-      marginBottom: '15px',
+      letterSpacing: '5px',
+      fontSize: '12px',
+      fontWeight: '700',
+      marginBottom: '20px',
       display: 'block'
     },
     heading: {
-      fontSize: isSmall ? '34px' : isMedium ? '44px' : '54px',
-      fontWeight: '900',
+      fontFamily: "'Bebas Neue', sans-serif",
+      fontSize: isSmall ? '42px' : isMedium ? '54px' : '72px',
+      fontWeight: '400',
       color: '#fff',
-      lineHeight: '1.1',
-      marginBottom: '15px',
+      lineHeight: '1',
+      marginBottom: '20px',
       textTransform: 'uppercase',
+      letterSpacing: '2px'
     },
     description: {
-      /* INCREASED: Small text description size */
-      fontSize: '17px',
-      color: '#cbd5e1', 
-      lineHeight: '1.6',
-      maxWidth: (isSmall || isMedium) ? '100%' : '450px',
-      marginBottom: '35px',
+      fontFamily: "'Inter', sans-serif",
+      fontSize: '16px',
+      color: '#94a3b8', 
+      lineHeight: '1.8',
+      maxWidth: (isSmall || isMedium) ? '100%' : '480px',
+      marginBottom: '40px',
+      letterSpacing: '0.2px'
     },
     formCard: {
-      flex: '1.2',
+      flex: '1.1',
       width: '100%',
-      backgroundColor: 'rgba(10, 14, 18, 0.5)',
-      padding: isSmall ? '25px' : '35px',
-      borderRadius: '16px', 
-      border: '1px solid rgba(255, 255, 255, 0.05)',
+      backgroundColor: 'rgba(10, 14, 18, 0.4)',
+      padding: isSmall ? '30px' : '45px',
+      borderRadius: '20px', 
+      border: '1px solid rgba(255, 255, 255, 0.08)',
     },
     input: (isFocused) => ({
       width: '100%',
       backgroundColor: '#02040a',
-      border: isFocused ? '1px solid #d4af37' : '1px solid #1e293b',
-      padding: '16px 20px',
-      marginBottom: '15px',
+      border: isFocused ? '1px solid #d4af37' : '1px solid rgba(255,255,255,0.1)',
+      padding: '18px 22px',
+      marginBottom: '18px',
       color: 'white',
-      borderRadius: '10px', 
-      /* INCREASED: Input text size */
-      fontSize: '16px',
+      borderRadius: '12px', 
+      fontSize: '15px',
+      fontFamily: "'Inter', sans-serif",
       boxSizing: 'border-box',
       outline: 'none',
-      transition: '0.3s ease',
-      transform: isFocused ? 'scale(1.01)' : 'scale(1)'
+      transition: 'all 0.3s ease',
     }),
     socialLink: {
       color: '#64748b',
-      fontSize: '24px',
-      transition: '0.3s ease',
+      fontSize: '26px',
+      transition: '0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
       display: 'inline-block'
     }
   };
 
   return (
     <section id="contact" style={styles.wrapper}>
-      <style>
-        {`
-          @keyframes subtleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-          }
-        `}
-      </style>
-
       <div style={styles.mainSectionPanel}>
         <div style={styles.container}>
           <div style={styles.infoSide}>
@@ -153,13 +144,13 @@ const ContactPage = () => {
               From Kampala to Copenhagen, we capture stories that matter. Reach out and let's create something limitless.
             </p>
             
-            <div style={{ display: 'flex', gap: '25px', justifyContent: (isSmall || isMedium) ? 'center' : 'flex-start' }}>
+            <div style={{ display: 'flex', gap: '30px', justifyContent: (isSmall || isMedium) ? 'center' : 'flex-start' }}>
               {socialPlatforms.map((p, idx) => (
                 <a 
                   key={idx} href={p.url} target="_blank" rel="noopener noreferrer" 
                   style={styles.socialLink}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = p.color; e.currentTarget.style.transform = 'translateY(-4px)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = p.color; e.currentTarget.style.transform = 'translateY(-6px) scale(1.1)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; e.currentTarget.style.transform = 'translateY(0) scale(1)'; }}
                 >
                   <p.Icon />
                 </a>
@@ -183,7 +174,7 @@ const ContactPage = () => {
               />
               <textarea
                 name="message" placeholder="Project details..." required
-                style={{ ...styles.input(activeField === 'message'), height: '130px', resize: 'none' }}
+                style={{ ...styles.input(activeField === 'message'), height: '140px', resize: 'none' }}
                 onFocus={() => setActiveField('message')} onBlur={() => setActiveField(null)}
                 value={formData.message} onChange={handleChange}
               />
@@ -191,13 +182,15 @@ const ContactPage = () => {
                 type="submit"
                 onMouseEnter={() => setBtnHovered(true)} onMouseLeave={() => setBtnHovered(false)}
                 style={{
-                  width: '100%', padding: '18px',
+                  width: '100%', padding: '20px',
                   backgroundColor: btnHovered ? '#fff' : '#d4af37',
-                  color: '#0a0e12', border: 'none', fontWeight: '900',
-                  textTransform: 'uppercase', letterSpacing: '2.5px', 
-                  /* INCREASED: Button text size */
-                  fontSize: '13px',
-                  cursor: 'pointer', borderRadius: '10px', transition: '0.3s ease'
+                  color: '#0a0e12', border: 'none', 
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  textTransform: 'uppercase', 
+                  letterSpacing: '4px', 
+                  fontSize: '11px',
+                  cursor: 'pointer', borderRadius: '12px', transition: 'all 0.4s ease'
                 }}
               >
                 Send Inquiry

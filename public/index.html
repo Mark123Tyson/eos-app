@@ -11,6 +11,10 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>EOS Limitless</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syncopate:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
       /* Remove default browser spacing */
       html, body {
@@ -18,9 +22,11 @@
         padding: 0 !important;
         width: 100%;
         height: 100%;
-        background-color: #050811; /* Matches your site background */
-        overflow-x: hidden; /* Prevents side-scrolling */
+        background-color: #050811;
+        overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
+        /* DEFAULT BODY FONT: Clean and legible */
+        font-family: 'Inter', sans-serif; 
       }
 
       #root {
@@ -29,7 +35,20 @@
         padding: 0;
       }
 
-      /* Ensures no element can accidentally push the width wider than the screen */
+      /* Apply Bebas Neue to all Headings by default */
+      h1, h2, h3, h4 {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+
+      /* Apply Syncopate to labels, buttons, and navigation */
+      button, .label, .tag, .nav-item {
+        font-family: 'Syncopate', sans-serif;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+      }
+
       * {
         box-sizing: border-box;
       }

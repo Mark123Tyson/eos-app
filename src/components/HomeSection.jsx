@@ -43,7 +43,8 @@ const HomeSection = () => {
       color: "#fff",
       paddingTop: isSmall ? "100px" : "0", 
       paddingBottom: isSmall ? "60px" : "0",
-      boxSizing: "border-box"
+      boxSizing: "border-box",
+      fontFamily: "'Inter', sans-serif" // Base font
     },
     bgContainer: {
       position: "absolute",
@@ -66,41 +67,42 @@ const HomeSection = () => {
     contentCard: {
       position: "relative",
       zIndex: 10,
-      /* DYNAMIC WIDTHS: Prevents filling the screen on medium devices */
       width: isSmall ? "90%" : isMedium ? "75%" : "850px", 
-      maxWidth: "1000px",
+      maxWidth: "1100px",
       padding: isSmall ? "30px 20px" : isMedium ? "50px 40px" : "60px",
       textAlign: "center",
-      backgroundColor: "rgba(10, 14, 18, 0.4)", 
-      backdropFilter: "blur(10px)",
-      WebkitBackdropFilter: "blur(10px)",
-      borderRadius: "20px",
-      border: "1px solid rgba(212, 175, 55, 0.2)",
-      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
+      backgroundColor: "rgba(10, 14, 18, 0.2)", // Lightened for cleaner look
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+      borderRadius: "24px",
+      border: "1px solid rgba(255, 255, 255, 0.05)",
+      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.8)",
       animation: "fadeInUp 1.2s ease-out forwards",
       margin: "0 auto"
     },
     heading: {
-      fontSize: isSmall ? "28px" : isMedium ? "50px" : "72px",
-      fontWeight: "900",
-      marginBottom: "2px",
-      letterSpacing: isSmall ? "2px" : "8px",
+      fontFamily: "'Bebas Neue', sans-serif",
+      fontSize: isSmall ? "42px" : isMedium ? "70px" : "90px", // Larger but Bebas is thinner than standard 900 weight
+      fontWeight: "400", // Bebas Neue is naturally bold; 400 is standard
+      marginBottom: "0px",
+      letterSpacing: isSmall ? "4px" : "12px",
       textTransform: "uppercase",
-      lineHeight: 1.1,
+      lineHeight: 1,
       color: "#ffffff"
     },
     accent: {
+      fontFamily: "'Syncopate', sans-serif",
       color: "#d4af37",
       display: "block",
-      fontSize: isSmall ? "14px" : isMedium ? "18px" : "22px",
-      letterSpacing: isSmall ? "6px" : "12px",
-      fontWeight: "600",
-      marginTop: "5px"
+      fontSize: isSmall ? "12px" : isMedium ? "16px" : "18px",
+      letterSpacing: isSmall ? "8px" : "16px",
+      fontWeight: "700",
+      marginTop: "10px"
     },
     filmStripWrapper: {
       width: "100%",
       overflowX: "auto",
-      margin: isSmall ? "20px 0" : "40px 0",
+      margin: isSmall ? "20px 0" : "45px 0",
       padding: "5px 0",
       display: "flex",
       justifyContent: isSmall ? "flex-start" : "center",
@@ -109,42 +111,44 @@ const HomeSection = () => {
     },
     filmStrip: {
       display: "flex",
-      gap: "10px",
+      gap: "12px",
       padding: isSmall ? "0 5px" : "0",
     },
     miniImg: {
-      width: isSmall ? "100px" : "110px", 
-      height: isSmall ? "130px" : "110px",
+      width: isSmall ? "100px" : "120px", 
+      height: isSmall ? "130px" : "150px",
       objectFit: "cover",
       borderRadius: "4px",
-      opacity: 0.9,
-      borderLeft: "3px solid #111",
-      borderRight: "3px solid #111",
+      opacity: 0.8,
+      border: "1px solid rgba(255,255,255,0.1)",
       flexShrink: 0,
-      transition: "all 0.3s ease"
+      transition: "all 0.4s ease"
     },
     subheading: {
-      fontSize: isSmall ? "11px" : isMedium ? "15px" : "18px", 
+      fontFamily: "'Inter', sans-serif",
+      fontSize: isSmall ? "12px" : isMedium ? "14px" : "16px", 
       marginBottom: isSmall ? "25px" : "40px",
-      color: "#ffffff",
-      letterSpacing: isSmall ? "2px" : "5px",
-      fontWeight: "600",
+      color: "#e2e8f0",
+      letterSpacing: "3px",
+      fontWeight: "400", // Lightened from 600 to avoid the "bold" look on large screens
       textTransform: "uppercase",
-      lineHeight: 1.5,
-      margin: "0 auto 25px auto"
+      lineHeight: 1.8,
+      margin: "0 auto 30px auto",
+      opacity: 0.9
     },
     ctaButton: {
+      fontFamily: "'Syncopate', sans-serif",
       display: "inline-block",
-      padding: isSmall ? "14px 28px" : "18px 45px",
-      fontSize: isSmall ? "11px" : "13px",
-      fontWeight: "bold",
+      padding: isSmall ? "14px 28px" : "18px 50px",
+      fontSize: isSmall ? "10px" : "12px",
+      fontWeight: "700",
       color: "#0a0e12",
       backgroundColor: "#d4af37",
-      borderRadius: "12px",
+      borderRadius: "8px",
       cursor: "pointer",
-      letterSpacing: "3px",
-      transition: "all 0.4s ease",
-      border: "1px solid #d4af37"
+      letterSpacing: "4px",
+      transition: "all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)",
+      border: "2px solid #d4af37"
     }
   };
 
@@ -154,10 +158,10 @@ const HomeSection = () => {
         {`
           @keyframes kenBurns {
             from { transform: scale(1); }
-            to { transform: scale(1.1); }
+            to { transform: scale(1.15); }
           }
           @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
           }
         `}
@@ -183,14 +187,16 @@ const HomeSection = () => {
                   style={styles.miniImg}
                   onMouseEnter={(e) => {
                       if(!isSmall) {
-                        e.target.style.transform = "scale(1.05)";
+                        e.target.style.transform = "translateY(-10px)";
                         e.target.style.borderColor = "#d4af37";
+                        e.target.style.opacity = "1";
                       }
                   }}
                   onMouseLeave={(e) => {
                       if(!isSmall) {
-                        e.target.style.transform = "scale(1)";
-                        e.target.style.borderColor = "#111";
+                        e.target.style.transform = "translateY(0)";
+                        e.target.style.borderColor = "rgba(255,255,255,0.1)";
+                        e.target.style.opacity = "0.8";
                       }
                   }}
                 />
@@ -210,10 +216,12 @@ const HomeSection = () => {
             onMouseEnter={(e) => {
               e.target.style.backgroundColor = "transparent";
               e.target.style.color = "#d4af37";
+              e.target.style.transform = "scale(1.05)";
             }}
             onMouseLeave={(e) => {
               e.target.style.backgroundColor = "#d4af37";
               e.target.style.color = "#0a0e12";
+              e.target.style.transform = "scale(1)";
             }}
           >
             EXPLORE SHOWREEL

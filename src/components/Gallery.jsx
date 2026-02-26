@@ -13,8 +13,6 @@ const ProofGallery = () => {
   }, []);
 
   const categories = ['Corporate', 'NGO', 'Events', 'Branding', 'Videography', 'Post-Production'];
-  
-  // Responsive check for padding adjustments
   const isSmallOrMedium = windowWidth < 1100;
 
   const imageLinks = [
@@ -47,13 +45,12 @@ const ProofGallery = () => {
 
   const handleCategoryChange = (cat) => {
     setActiveCategory(cat);
-    const offset = 80;
+    // Smooth scroll offset to handle header height
+    const offset = 90;
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = sectionRef.current.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
-
-    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
   };
 
   const Navigation = ({ isFooter }) => (
@@ -61,8 +58,6 @@ const ProofGallery = () => {
       <button 
         onClick={() => handleCategoryChange('All')}
         style={{...styles.filterBtn, color: activeCategory === 'All' ? '#d4af37' : '#fff', borderColor: activeCategory === 'All' ? '#d4af37' : 'rgba(255,255,255,0.2)'}}
-        onMouseEnter={(e) => { e.target.style.background = 'rgba(212, 175, 55, 0.1)'; }}
-        onMouseLeave={(e) => { e.target.style.background = 'none'; }}
       >
         All Services
       </button>
@@ -92,53 +87,58 @@ const ProofGallery = () => {
   const styles = {
     section: { 
       backgroundColor: '#050811', 
-      padding: isSmallOrMedium ? '100px 5% 50px 5%' : '10px 5% 50px 5%', 
-      marginTop: '-15px',
+      /* FIXED: Increased top padding for desktop to prevent header overlap */
+      padding: isSmallOrMedium ? '100px 5% 50px 5%' : '120px 5% 80px 5%', 
       textAlign: 'center', 
       color: 'white',
       position: 'relative',
-      zIndex: 5
+      zIndex: 5,
+      fontFamily: "'Inter', sans-serif"
     },
     heading: { 
-      fontSize: '44px', 
-      letterSpacing: '5px', 
+      fontFamily: "'Bebas Neue', sans-serif",
+      fontSize: isSmallOrMedium ? '38px' : '52px', 
+      letterSpacing: '6px', 
       textTransform: 'uppercase', 
       marginBottom: '8px',
       marginTop: '0',
-      fontWeight: '900'
+      fontWeight: '400', 
+      color: '#fff'
     },
-    line: { width: '60px', height: '4px', backgroundColor: '#d4af37', margin: '0 auto 25px auto' },
+    line: { width: '60px', height: '3px', backgroundColor: '#d4af37', margin: '0 auto 25px auto' },
     filterMenu: { display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px' },
     filterBtn: { 
+      fontFamily: "'Syncopate', sans-serif",
       background: 'none', 
       border: '1px solid', 
-      padding: '8px 18px', 
+      padding: '10px 20px', 
       cursor: 'pointer', 
       borderRadius: '4px', 
       textTransform: 'uppercase', 
-      fontSize: '11px', 
+      fontSize: '10px', 
       fontWeight: '700',
-      letterSpacing: '1.5px', 
+      letterSpacing: '2.5px', 
       transition: '0.3s all ease' 
     },
     subLabel: { 
+      fontFamily: "'Syncopate', sans-serif",
       textTransform: 'uppercase', 
-      fontSize: '13px', 
+      fontSize: '11px', 
       color: '#d4af37', 
       marginBottom: '35px', 
-      letterSpacing: '2px', 
-      opacity: 0.7, 
+      letterSpacing: '4px', 
+      opacity: 0.8, 
       marginTop: '12px' 
     },
     footerLabel: { 
+      fontFamily: "'Syncopate', sans-serif",
       textTransform: 'uppercase', 
-      fontSize: '13px', 
+      fontSize: '11px', 
       color: '#d4af37', 
       marginBottom: '15px', 
-      letterSpacing: '2px', 
-      opacity: 0.7 
+      letterSpacing: '4px', 
+      opacity: 0.8 
     },
-    
     grid: { 
       display: 'grid', 
       gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
@@ -146,47 +146,50 @@ const ProofGallery = () => {
       maxWidth: '1400px', 
       margin: '0 auto' 
     },
-
     card: { 
       position: 'relative', 
       height: '450px', 
       cursor: 'pointer', 
       overflow: 'hidden', 
       borderRadius: '15px', 
-      border: '1px solid #1a1a1a', 
-      /* FIXED: Background color blends with home section */
+      border: '1px solid rgba(255,255,255,0.08)', 
       backgroundColor: '#0a0e1a',
-      backgroundImage: 'radial-gradient(circle at center, #0f172a 0%, #050811 100%)',
       transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)'
+    },
+    overlay: { 
+      position: 'absolute', 
+      bottom: 0, left: 0, right: 0, 
+      background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)', 
+      padding: '35px 25px', 
+      textAlign: 'left', 
+      zIndex: 10 
+    },
+    tag: { 
+      fontFamily: "'Syncopate', sans-serif",
+      color: '#d4af37', 
+      fontSize: '10px', 
+      fontWeight: '700', 
+      textTransform: 'uppercase', 
+      letterSpacing: '3px' 
+    },
+    cardTitle: { 
+      fontFamily: "'Inter', sans-serif",
+      fontSize: '20px', 
+      margin: '8px 0 0 0', 
+      color: '#fff', 
+      fontWeight: '600',
+      letterSpacing: '0.5px'
     },
     compositeContainer: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(3, 1fr)', height: '100%', width: '100%', gap: '2px' },
     baseImg: { width: '100%', height: '100%', objectFit: 'cover', transition: 'all 0.4s ease' },
     portalContainer: { position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' },
     circleFrame: { 
-      width: '160px', 
-      height: '160px', 
-      borderRadius: '50%', 
-      border: '4px solid #d4af37', 
-      overflow: 'hidden', 
-      boxShadow: '0 0 35px rgba(0,0,0,0.9)',
-      transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-      zIndex: 5,
-      /* FIXED: Ensure portal frame has blend color */
-      backgroundColor: '#050811'
+      width: '160px', height: '160px', borderRadius: '50%', 
+      border: '3px solid #d4af37', overflow: 'hidden', 
+      boxShadow: '0 0 35px rgba(0,0,0,0.9)', zIndex: 5, backgroundColor: '#050811'
     },
     roundImg: { width: '100%', height: '100%', objectFit: 'cover' },
-    overlay: { position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%)', padding: '30px 25px', textAlign: 'left', zIndex: 10 },
-    tag: { color: '#d4af37', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '2px' },
-    cardTitle: { fontSize: '22px', margin: '5px 0', color: '#fff', fontWeight: '800' },
-    singleImgWrapper: { 
-      height: '350px', 
-      borderRadius: '12px', 
-      overflow: 'hidden', 
-      border: '1px solid #1a1a1a',
-      /* FIXED: Added background color for single views */
-      backgroundColor: '#0a0e1a',
-      transition: 'transform 0.3s ease'
-    },
+    singleImgWrapper: { height: '350px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #1a1a1a', backgroundColor: '#0a0e1a' },
     singleImg: { width: '100%', height: '100%', objectFit: 'cover' }
   };
 
@@ -205,9 +208,9 @@ const ProofGallery = () => {
               key={album.category} 
               style={{
                 ...styles.card,
-                transform: hoveredCard === album.category ? 'translateY(-5px)' : 'translateY(0)',
-                borderColor: hoveredCard === album.category ? '#d4af37' : '#1a1a1a',
-                boxShadow: hoveredCard === album.category ? '0 10px 30px rgba(0,0,0,0.5)' : 'none'
+                transform: hoveredCard === album.category ? 'translateY(-8px)' : 'translateY(0)',
+                borderColor: hoveredCard === album.category ? '#d4af37' : 'rgba(255,255,255,0.08)',
+                boxShadow: hoveredCard === album.category ? '0 15px 40px rgba(0,0,0,0.8)' : 'none'
               }} 
               onClick={() => handleCategoryChange(album.category)}
               onMouseEnter={() => setHoveredCard(album.category)}
@@ -227,8 +230,7 @@ const ProofGallery = () => {
                         ...styles.baseImg, 
                         gridColumn: gridPos[gridIdx].gc, 
                         gridRow: gridPos[gridIdx].gr,
-                        opacity: hoveredCard === album.category ? 0.6 : 0.45,
-                        filter: hoveredCard === album.category ? 'grayscale(0%)' : 'grayscale(30%)'
+                        opacity: hoveredCard === album.category ? 0.6 : 0.35,
                       }} 
                       alt="sub" 
                     />
@@ -236,11 +238,7 @@ const ProofGallery = () => {
                 })}
                 
                 <div style={styles.portalContainer}>
-                  <div style={{
-                    ...styles.circleFrame,
-                    transform: hoveredCard === album.category ? 'scale(1.1)' : 'scale(1)',
-                    borderColor: hoveredCard === album.category ? '#fff' : '#d4af37'
-                  }}>
+                  <div style={styles.circleFrame}>
                     <img src={album.images[0]} style={styles.roundImg} alt="focus" />
                   </div>
                 </div>
@@ -261,7 +259,7 @@ const ProofGallery = () => {
         )}
       </div>
 
-      <div style={{marginTop: '40px'}}>
+      <div style={{marginTop: '50px'}}>
         <p style={styles.footerLabel}>Browse Other Services</p>
         <Navigation isFooter={true} />
       </div>

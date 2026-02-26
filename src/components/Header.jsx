@@ -57,18 +57,19 @@ const Header = () => {
 
   const styles = {
     header: {
-      /* FIXED: Reverted to the discussed #0a0e12 color palette */
+      /* CHANGE 1: Color distinction - slightly lighter navy/midnight to separate from home #050811 */
       backgroundColor:
         scrolled || menuOpen
-          ? 'rgba(10, 14, 18, 0.98)'
-          : 'rgba(10, 14, 18, 0.8)',
+          ? 'rgba(13, 17, 29, 0.98)' 
+          : 'rgba(21, 27, 45, 0.85)',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+      /* CHANGE 2: Reduced vertical padding to lower the overall height on Desktop */
       padding: isDesktop
         ? scrolled
-          ? '12px 80px'
-          : '20px 80px'
+          ? '10px 80px' // Slimmer
+          : '15px 80px' // Slimmer than original 20px
         : '15px 25px',
       position: 'fixed',
       top: 0,
@@ -81,10 +82,12 @@ const Header = () => {
       transition: 'all 0.4s ease',
       transform: visible ? 'translateY(0)' : 'translateY(-100%)',
       opacity: visible ? 1 : 0,
+      /* Added a subtle border to help the visual separation */
+      borderBottom: scrolled ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(255, 255, 255, 0.05)',
     },
 
     logo: {
-      width: isDesktop ? (scrolled ? '90px' : '110px') : '80px',
+      width: isDesktop ? (scrolled ? '85px' : '100px') : '80px',
       cursor: 'pointer',
       borderRadius: '25% 0% 25% 0%',
       transition: 'all 0.4s ease',
@@ -116,10 +119,9 @@ const Header = () => {
       left: 0,
       right: 0,
       height: isDesktop ? 'auto' : '100vh',
-      /* FIXED: Reverted to the discussed #0a0e12 color palette */
       backgroundColor: isDesktop
         ? 'transparent'
-        : 'rgba(10, 14, 18, 0.98)',
+        : 'rgba(13, 17, 29, 0.98)',
       gap: isDesktop ? '35px' : '30px',
       padding: isDesktop
         ? '0'
@@ -134,7 +136,7 @@ const Header = () => {
     link: {
       color: '#ffffff',
       textDecoration: 'none',
-      fontSize: isDesktop ? '12px' : '20px',
+      fontSize: isDesktop ? '11px' : '20px',
       fontWeight: '700',
       textTransform: 'uppercase',
       letterSpacing: '2px',
