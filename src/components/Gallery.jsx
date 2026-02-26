@@ -45,7 +45,6 @@ const ProofGallery = () => {
 
   const handleCategoryChange = (cat) => {
     setActiveCategory(cat);
-    // Smooth scroll offset to handle header height
     const offset = 90;
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = sectionRef.current.getBoundingClientRect().top;
@@ -87,14 +86,30 @@ const ProofGallery = () => {
   const styles = {
     section: { 
       backgroundColor: '#050811', 
-      /* FIXED: Increased top padding for desktop to prevent header overlap */
-      padding: isSmallOrMedium ? '100px 5% 50px 5%' : '120px 5% 80px 5%', 
+      padding: isSmallOrMedium ? '100px 5% 50px 5%' : '140px 5% 80px 5%', 
       textAlign: 'center', 
       color: 'white',
       position: 'relative',
       zIndex: 5,
       fontFamily: "'Inter', sans-serif"
     },
+    /* VIEW FINDER FRAME EFFECT */
+    viewfinder: {
+        position: 'absolute',
+        top: isSmallOrMedium ? '80px' : '90px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '90%',
+        maxWidth: '1400px',
+        height: '200px',
+        borderLeft: '1px solid rgba(212, 175, 55, 0.3)',
+        borderRight: '1px solid rgba(212, 175, 55, 0.3)',
+        zIndex: -1,
+        pointerEvents: 'none'
+    },
+    cornerTL: { position: 'absolute', top: 0, left: 0, width: '20px', height: '20px', borderTop: '2px solid #d4af37', borderLeft: '2px solid #d4af37' },
+    cornerTR: { position: 'absolute', top: 0, right: 0, width: '20px', height: '20px', borderTop: '2px solid #d4af37', borderRight: '2px solid #d4af37' },
+    
     heading: { 
       fontFamily: "'Bebas Neue', sans-serif",
       fontSize: isSmallOrMedium ? '38px' : '52px', 
@@ -195,6 +210,16 @@ const ProofGallery = () => {
 
   return (
     <section id="proof" ref={sectionRef} style={styles.section}>
+      {/* CAMERA VIEWFINDER OVERLAY ELEMENT */}
+      <div style={styles.viewfinder}>
+          <div style={styles.cornerTL}></div>
+          <div style={styles.cornerTR}></div>
+          <div style={{
+              position: 'absolute', bottom: '-10px', left: '50%', transform: 'translateX(-50%)',
+              fontFamily: "'Inter', sans-serif", fontSize: '9px', letterSpacing: '2px', color: 'rgba(212, 175, 55, 0.4)'
+          }}></div>
+      </div>
+
       <h2 style={styles.heading}>Project Archive</h2>
       <div style={styles.line}></div>
 

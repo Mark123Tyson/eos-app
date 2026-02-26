@@ -31,16 +31,12 @@ const ProductsSection = () => {
   const styles = {
     section: {
       position: 'relative',
-      /* FIX: Increased top padding to 120px to sit below your fixed header */
       padding: isMobile 
         ? '100px 20px 60px 20px' 
         : isTablet 
           ? '110px 30px 70px 30px' 
-          : '120px 40px 100px 40px',
-      
-      /* FIX: Stops the scroll exactly 80px above the section so header doesn't overlap title */
+          : '130px 40px 100px 40px',
       scrollMarginTop: isMobile ? '70px' : '90px',
-      
       backgroundColor: '#050811',
       backgroundImage: `
         radial-gradient(circle, rgba(200, 200, 200, 0.4) 0.5px, transparent 0.5px),
@@ -51,9 +47,23 @@ const ProductsSection = () => {
       textAlign: 'center',
       width: '100%',
       boxSizing: 'border-box',
-      /* REMOVED: marginTop: '-15px' (This was causing the overlap) */
       zIndex: 5,
-      fontFamily: "'Inter', sans-serif"
+      fontFamily: "'Inter', sans-serif",
+      overflow: 'hidden' // Keeps the large watermark from causing horizontal scroll
+    },
+    watermark: {
+      position: 'absolute',
+      top: isMobile ? '20px' : '0px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      fontSize: isMobile ? '80px' : '180px',
+      fontFamily: "'Bebas Neue', sans-serif",
+      color: 'rgba(255, 255, 255, 0.03)', 
+      zIndex: -1,
+      pointerEvents: 'none',
+      letterSpacing: isMobile ? '10px' : '30px',
+      whiteSpace: 'nowrap',
+      userSelect: 'none'
     },
     heading: { 
       fontFamily: "'Bebas Neue', sans-serif", 
@@ -61,7 +71,9 @@ const ProductsSection = () => {
       letterSpacing: '6px', 
       textTransform: 'uppercase', 
       fontWeight: '400', 
-      margin: '0 0 10px 0' 
+      margin: '0 0 10px 0',
+      position: 'relative',
+      zIndex: 2
     },
     line: { 
       width: '60px', 
@@ -151,6 +163,9 @@ const ProductsSection = () => {
 
   return (
     <section id="services" style={styles.section}>
+      {/* WATERMARK DIVIDER */}
+      <div style={styles.watermark}>SERVICES</div>
+
       <h2 style={styles.heading}>Professional Services</h2>
       <div style={styles.line}></div>
       
@@ -181,7 +196,6 @@ const ProductsSection = () => {
               ...styles.innerRing,
               borderColor: hovered === idx ? '#d4af37' : 'rgba(212, 175, 55, 0.4)',
               transform: hovered === idx ? 'translate(-50%, -50%) scale(1.04)' : 'translate(-50%, -50%) scale(1)',
-              boxShadow: hovered === idx ? '0 0 20px rgba(212, 175, 55, 0.2)' : 'none'
             }}></div>
 
             <img 
