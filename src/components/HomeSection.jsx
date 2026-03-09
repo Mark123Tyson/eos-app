@@ -8,7 +8,7 @@ import documentaryImg from '../assets/documentary.jpg';
 import abstractImg from '../assets/abstract.jpeg';
 
 const HomeSection = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
